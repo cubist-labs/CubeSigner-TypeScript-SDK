@@ -1,0 +1,4168 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CubeSigner API",
+    "description": "The CubeSigner management and signing service.",
+    "contact": {
+      "name": "Cubist Inc.",
+      "email": "hello@cubist.dev"
+    },
+    "version": "v0.19.0"
+  },
+  "servers": [
+    {
+      "url": "https://gamma.signer.cubist.dev",
+      "description": "Testing and staging environment"
+    },
+    {
+      "url": "https://prod.signer.cubist.dev",
+      "description": "Production environment"
+    }
+  ],
+  "paths": {
+    "/v0/about_me": {
+      "get": {
+        "tags": ["User"],
+        "summary": "User Info",
+        "description": "User Info\n\nRetrieves information about the current user.",
+        "operationId": "aboutMe",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/UserInfo"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}": {
+      "get": {
+        "tags": ["Orgs"],
+        "summary": "Get Org",
+        "description": "Get Org\n\nRetrieves information about an organization.",
+        "operationId": "getOrg",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/OrgInfo"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "patch": {
+        "tags": ["Orgs"],
+        "summary": "Update Org",
+        "description": "Update Org\n\nUpdate organization attributes (enabled flag, name, and policies).",
+        "operationId": "updateOrg",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrgRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/UpdateOrgResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}/btc/sign/{pubkey}": {
+      "post": {
+        "tags": ["Signing"],
+        "summary": "Sign Bitcoin Transaction",
+        "description": "Sign Bitcoin Transaction\n\nSigns a Bitcoin transaction with a given key.\nThis is a pre-release feature.",
+        "operationId": "btcSign",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "pubkey",
+            "in": "path",
+            "description": "bech32 encoding of the public key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "bc1q5p5qkae77ly80kr4pyfytdqm7rf08ddhdejl9g"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BtcSignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/BtcSignResponse"
+          },
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcceptedResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "SignerAuth": []
+          }
+        ]
+      }
+    },
+    "/v0/org/{org_id}/import_key": {
+      "get": {
+        "tags": ["Keys"],
+        "summary": "Create Key-Import Key",
+        "description": "Create Key-Import Key\n\nGenerate an ephemeral key that a client can use for key-import encryption.",
+        "operationId": "createKeyImportKey",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/CreateKeyImportKeyResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "Cognito": []
+          }
+        ]
+      },
+      "put": {
+        "tags": ["Keys"],
+        "summary": "Import Key",
+        "description": "Import Key\n\nSecurely imports an existing key using a previously generated key-import key.",
+        "operationId": "importKey",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/CreateKeyResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "Cognito": []
+          }
+        ]
+      }
+    },
+    "/v0/org/{org_id}/invite": {
+      "post": {
+        "tags": ["Users In Org"],
+        "summary": "Invite User",
+        "description": "Invite User\n\nCreates a new user in an existing org and sends that user an invite email.",
+        "operationId": "invite",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/EmptyImpl"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}/keys": {
+      "get": {
+        "tags": ["Keys"],
+        "summary": "List Keys",
+        "description": "List Keys\n\nGets the list of owned keys in a given org.",
+        "operationId": "listKeysInOrg",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "key_type",
+            "in": "query",
+            "description": "Filter by key type",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/KeyType"
+            },
+            "style": "form",
+            "example": "SecpEthAddr"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetKeysInOrgResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": ["Keys"],
+        "summary": "Create Key",
+        "description": "Create Key\n\nCreates one or more new keys of the specified type (BLS or Secp).",
+        "operationId": "createKey",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/CreateKeyResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "Cognito": []
+          }
+        ]
+      },
+      "put": {
+        "tags": ["Keys"],
+        "summary": "Import Key (Deprecated)",
+        "description": "Import Key (Deprecated)\n\nSecurely imports an existing key. This API is deprecated; please use the new version.",
+        "operationId": "importKeyLegacy",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportKeyLegacyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/CreateKeyResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "Cognito": []
+          }
+        ]
+      }
+    },
+    "/v0/org/{org_id}/keys/get_keys": {
+      "post": {
+        "tags": ["Keys"],
+        "summary": "Legacy List Keys",
+        "description": "Legacy List Keys\n\nThis route is deprecated. Use `GET /v0/org/<org_id>/keys?<key_type>`",
+        "operationId": "listKeysLegacy",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetKeysInOrgRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetKeysInOrgResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/v0/org/{org_id}/keys/{key_id}": {
+      "get": {
+        "tags": ["Keys"],
+        "summary": "Get Key",
+        "description": "Get Key\n\nReturns the properties of a key.",
+        "operationId": "getKeyInOrg",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "key_id",
+            "in": "path",
+            "description": "ID of the key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Key#0x8e3484687e66cdd26cf04c3647633ab4f3570148"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/KeyInfo"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "patch": {
+        "tags": ["Keys"],
+        "summary": "Update Key",
+        "description": "Update Key\n\nEnable or disable a key.  The user must be the owner of the key or organization to perform this action.",
+        "operationId": "updateKey",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "key_id",
+            "in": "path",
+            "description": "ID of the key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Key#0x8e3484687e66cdd26cf04c3647633ab4f3570148"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/KeyInfo"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}/mfa/{mfa_id}": {
+      "get": {
+        "tags": ["MFA"],
+        "summary": "Gets a Pending MFA Request",
+        "description": "Gets a Pending MFA Request\n\nRetrieves and returns a pending MFA request by its id.",
+        "operationId": "mfaGet",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "mfa_id",
+            "in": "path",
+            "description": "ID of the approval",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/MfaRequestInfo"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "patch": {
+        "tags": ["MFA"],
+        "summary": "Approve a Pending MFA Request",
+        "description": "Approve a Pending MFA Request\n\nAdds the current user as an approver of a pending MFA request of the [Status::RequiredApprovers] kind.\nIf the required number of approvers is reached, the MFA request is approved;\nthe confirmation receipt can be used to resume the original HTTP request.",
+        "operationId": "mfaApproveCs",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "mfa_id",
+            "in": "path",
+            "description": "ID of the MFA approval request",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "MfaRequest#6de79de4-662c-4203-9235-b6ace5cb432b"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/MfaRequestInfo"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}/mfa/{mfa_id}/totp": {
+      "patch": {
+        "tags": ["TOTP"],
+        "summary": "Approve a TOTP MFA Request",
+        "description": "Approve a TOTP MFA Request\n\nAdds an approver to a pending TOTP MFA request.\n\nIf the required number of approvers is reached, the MFA request is approved;\nthe confirmation receipt can be used to resume the original HTTP request.",
+        "operationId": "mfaApproveTotp",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "mfa_id",
+            "in": "path",
+            "description": "ID of the MFA approval request",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "MfaRequest#6de79de4-662c-4203-9235-b6ace5cb432b"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TotpApproveRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/MfaRequestInfo"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "SignerAuth": []
+          }
+        ]
+      }
+    },
+    "/v0/org/{org_id}/oidc": {
+      "post": {
+        "tags": ["Third-party Auth"],
+        "summary": "Login with OIDC",
+        "description": "Login with OIDC\n\nExchange an OIDC ID token (passed via the `Authorization` header) for a signer session",
+        "operationId": "oidcAuth",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OidcLoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/OidcLoginResponse"
+          },
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcceptedResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "Oidc": []
+          }
+        ]
+      }
+    },
+    "/v0/org/{org_id}/roles": {
+      "get": {
+        "tags": ["Roles"],
+        "summary": "List Roles",
+        "description": "List Roles\n\nRetrieves all roles in an organization that the current user is allowed to access.",
+        "operationId": "listRoles",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ListRolesResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": ["Roles"],
+        "summary": "Create Role",
+        "description": "Create Role\n\nCreates a new role in an organization. Unless the logged-in user\nis the owner, they are automatically added to the newly created role.",
+        "operationId": "createRole",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "description": "Optional request body to set the role name",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoleRequest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/CreateRoleResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}/roles/{role_id}": {
+      "get": {
+        "tags": ["Roles"],
+        "summary": "Get Role",
+        "description": "Get Role\n\nRetrieves information about a role in an organization",
+        "operationId": "getRole",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "description": "Name or ID of the desired Role",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Role#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/RoleInfo"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "delete": {
+        "tags": ["Roles"],
+        "summary": "Delete Role",
+        "description": "Delete Role\n\nDeletes a role in an organization.\nOnly organization owners can perform this action.",
+        "operationId": "deleteRole",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "description": "Name or ID of the desired Role",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Role#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/EmptyImpl"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "patch": {
+        "tags": ["Roles"],
+        "summary": "Update Role",
+        "description": "Update Role\n\nEnables or disables a role.\nThe user must be in the role or an owner of the organization.",
+        "operationId": "updateRole",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "description": "Name or ID of the desired Role",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Role#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/EmptyImpl"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}/roles/{role_id}/add_keys": {
+      "put": {
+        "tags": ["Keys In Role"],
+        "summary": "Add Keys",
+        "description": "Add Keys\n\nAdds a list of existing keys to an existing role.",
+        "operationId": "addKeysToRole",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "description": "Name or ID of the desired Role",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Role#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddKeysToRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {},
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}/roles/{role_id}/add_user/{user_id}": {
+      "put": {
+        "tags": ["Users In Role"],
+        "summary": "Add User",
+        "description": "Add User\n\nAdds an existing user to an existing role.\nOnly users in the role or owners can add users to a role.",
+        "operationId": "addUserToRole",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "description": "Name or ID of the desired Role",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Role#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user to add to role",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "User#c3b9379c-4e8c-4216-bd0a-65ace53cf98f"
+          }
+        ],
+        "responses": {},
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}/roles/{role_id}/keys/{key_id}": {
+      "delete": {
+        "tags": ["Keys In Role"],
+        "summary": "Remove Key",
+        "description": "Remove Key\n\nRemoves a given key from a role",
+        "operationId": "removeKeyFromRole",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "description": "Name or ID of the desired Role",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Role#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "key_id",
+            "in": "path",
+            "description": "ID of the desired Key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Key#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "responses": {},
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}/roles/{role_id}/tokens": {
+      "get": {
+        "tags": ["Role Access Tokens"],
+        "summary": "List Tokens",
+        "description": "List Tokens\n\nReturns all access tokens for a given role.\nOnly users in the role or owners can create a token for it.",
+        "operationId": "listRoleTokens",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "description": "Name or ID of the desired Role",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Role#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ListTokensResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": ["Role Access Tokens"],
+        "summary": "Create Token",
+        "description": "Create Token\n\nCreates a new access token for a given role (to be used as \"API Key\" for all signing actions).\nOnly users in the role or owners can create a token for it.",
+        "operationId": "createRoleToken",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "description": "Name or ID of the desired Role",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Role#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/CreateTokenResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "delete": {
+        "tags": ["Role Access Tokens"],
+        "summary": "Revoke All Tokens",
+        "description": "Revoke All Tokens\n\nRevokes all access tokens associated with a role.\nOnly users in the role or owners can perform this action.",
+        "operationId": "revokeAllRoleTokens",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "description": "Name or ID of the desired Role",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Role#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/RevokeTokensResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}/roles/{role_id}/tokens/{session_id}": {
+      "delete": {
+        "tags": ["Role Access Tokens"],
+        "summary": "Revoke Token",
+        "description": "Revoke Token\n\nRevokes an access token associated with a role.\nOnly users in the role or owners can perform this action.",
+        "operationId": "revokeRoleToken",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "description": "Name or ID of the desired Role",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Role#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "session_id",
+            "in": "path",
+            "description": "The ID of the session to revoke",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "77aad2100c361f497635dd005c4d15781e2e5df4b9f45d8e74f37425cbc30b9e"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/RevokeTokenResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v0/org/{org_id}/token/keys": {
+      "get": {
+        "tags": ["Role Access Tokens"],
+        "summary": "Get Token-Accessible Keys",
+        "description": "Get Token-Accessible Keys\n\nRetrieves the keys that the role token can access.",
+        "operationId": "listTokenKeys",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/KeyInfos"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "SignerAuth": []
+          }
+        ]
+      }
+    },
+    "/v0/org/{org_id}/users": {
+      "get": {
+        "tags": ["Users In Org"],
+        "summary": "List users in organization",
+        "description": "List users in organization\n",
+        "operationId": "listUsersInOrg",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetUsersInOrgResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": ["Users In Org"],
+        "summary": "Adds a third-party user to the org",
+        "description": "Adds a third-party user to the org\n",
+        "operationId": "createOidcUser",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddThirdPartyUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/AddThirdPartyUserResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v0/totp": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Reset TOTP",
+        "description": "Reset TOTP\n\nCreates and sets a new TOTP configuration for the current user,\noverriding the existing one (if any).",
+        "operationId": "userResetTotp",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/TotpInfo"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v0/totp/verify/{code}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Verify TOTP",
+        "description": "Verify TOTP\n\nChecks if a given code matches the current TOTP code for the current user.\nErrors with 403 if the current user has not set up TOTP or the code fails verification.",
+        "operationId": "userVerifyTotp",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/EmptyImpl"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/org/{org_id}/blob/sign/{key_id}": {
+      "post": {
+        "tags": ["Signing"],
+        "summary": "Sign Raw Blob",
+        "description": "Sign Raw Blob\n\nSigns an arbitrary blob with a given key.\nThis is a pre-release feature.",
+        "operationId": "blobSign",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "key_id",
+            "in": "path",
+            "description": "The ID of the key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Key#0x49011adbCC3bC9c0307BB07F37Dda1a1a9c69d2E"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlobSignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/BlobSignResponse"
+          },
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcceptedResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "SignerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/org/{org_id}/cube3signer/heartbeat": {
+      "post": {
+        "tags": ["Cube3Signer"],
+        "summary": "Record heartbeat",
+        "description": "Record heartbeat\n\nThis endpoint is called by the cube3signer proxy to record various metrics to CloudWatch.",
+        "operationId": "cube3signerHeartbeat",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the organization owning the key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HeartbeatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/EmptyImpl"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "SignerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/org/{org_id}/eth1/sign/{pubkey}": {
+      "post": {
+        "tags": ["Signing"],
+        "summary": "Sign EVM Transaction",
+        "description": "Sign EVM Transaction\n\nSigns an Ethereum (and other EVM) transaction with a given Secp256k1 key.\n\nThe key must be associated with the role and organization on whose behalf this action is called.",
+        "operationId": "eth1Sign",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "pubkey",
+            "in": "path",
+            "description": "Hex-encoded ethereum address of the secp key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x49011adbCC3bC9c0307BB07F37Dda1a1a9c69d2E"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Eth1SignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Eth1SignResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "SignerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/org/{org_id}/eth2/sign/{pubkey}": {
+      "post": {
+        "tags": ["Signing"],
+        "summary": "Sign Validator Request",
+        "description": "Sign Validator Request\n\nSigns an eth2 validator request with a given BLS key.\n\nThe key must be associated with the role and organization on whose behalf this action is called.",
+        "operationId": "eth2Sign",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "pubkey",
+            "in": "path",
+            "description": "Hex-encoded validator (BLS) public key with 0x prefix",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x9700fbb8c906942442c2a5b3ad7498f27aedda253786a6fbaa8fef47fb7af234e50cf2cce815a553087992ae565d48da"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Eth2SignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Eth2SignResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "SignerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/org/{org_id}/eth2/stake": {
+      "post": {
+        "tags": ["Signing"],
+        "summary": "Sign Stake Deposit",
+        "description": "Sign Stake Deposit\n\nSigns a deposit transaction with a `validator_key`. If `validator_key` is set to a pregenerated key, we use the\nprovided validator key. Otherwise, we generate a new BLS key.\n\nWhen using a pregenerated key, the key must be associated with the role and organization on whose\nbehalf this action is called.",
+        "operationId": "stake",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StakeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/StakeResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "SignerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/org/{org_id}/eth2/unstake/{pubkey}": {
+      "post": {
+        "tags": ["Signing"],
+        "summary": "Sign Unstake Request",
+        "description": "Sign Unstake Request\n\nHandle unstaking request, producing a signed voluntary exit message\nthat can be posted directly to the Beacon chain.\n\nThe key must be associated with the role and organization on whose behalf this action is called.",
+        "operationId": "unstake",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "pubkey",
+            "in": "path",
+            "description": "Hex-encoded validator (BLS) public key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0xa99a76ed7796f7be22d5b7e85deeb7c5677e88e511e0b337618f8c4eb61349b4bf2d153f649f7b53359fe8b94a38e44c"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnstakeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/UnstakeResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "SignerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/org/{org_id}/solana/sign/{pubkey}": {
+      "post": {
+        "tags": ["Signing"],
+        "summary": "Sign Solana Message",
+        "description": "Sign Solana Message\n\nSigns a Solana message with a given key.\nThis is a pre-release feature.",
+        "operationId": "solanaSign",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "Name or ID of the desired Org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          {
+            "name": "pubkey",
+            "in": "path",
+            "description": "The base58-encoded public key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "86ZRPszBp5EoPj7wR3bHn7wnAZ5iYfpasRc7DKFPTUaZ"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolanaSignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SolanaSignResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "SignerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/org/{org_id}/token/refresh": {
+      "patch": {
+        "tags": ["SignerSession"],
+        "summary": "Refresh Signer Session",
+        "description": "Refresh Signer Session",
+        "operationId": "signerSessionRefresh",
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "description": "ID of the organization owning the key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/RefreshResponse"
+          },
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "SignerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AcceptedResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "AcceptedValue": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["MfaRequired"],
+            "properties": {
+              "MfaRequired": {
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "description": "Different responses we return for status code \"202 Accepted\".\n\nEven though \"202 Accepted\" is a successful response, we represent\nit as a Rust error because that makes it easy to have route handlers\nreturn `Result<T, SignerError>` where `T` is the type of the\nresponse for the status code \"200 Ok\"."
+      },
+      "AddKeysToRoleRequest": {
+        "type": "object",
+        "required": ["key_ids", "policy"],
+        "properties": {
+          "key_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of keys to add to a role",
+            "example": ["Key#63023a27-1e70-430a-b293-ffbc9d6c4484"]
+          },
+          "policy": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Optional policies to apply for each key",
+            "example": [
+              {
+                "TxReceiver": "0x8c594691c0e592ffa21f153a16ae41db5befcaaa"
+              },
+              {
+                "TxDeposit": {
+                  "kind": "Canonical"
+                }
+              },
+              {
+                "RequireMfa": {
+                  "kind": {
+                    "RequiredApprovers": {
+                      "count": 1
+                    }
+                  },
+                  "restricted_operations": ["Eth1Sign", "BlobSign"]
+                }
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "AddThirdPartyUserRequest": {
+        "type": "object",
+        "required": ["identity", "role"],
+        "properties": {
+          "identity": {
+            "$ref": "#/components/schemas/OIDCIdentity"
+          },
+          "role": {
+            "$ref": "#/components/schemas/MemberRole"
+          }
+        }
+      },
+      "ApprovalInfo": {
+        "type": "object",
+        "required": ["timestamp"],
+        "properties": {
+          "timestamp": {
+            "$ref": "#/components/schemas/EpochDateTime"
+          }
+        }
+      },
+      "AuthData": {
+        "type": "object",
+        "description": "Data required for both `authenticate` and `refresh`.",
+        "required": ["epoch_num", "epoch_token", "other_token"],
+        "properties": {
+          "epoch_num": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "epoch_token": {
+            "$ref": "#/components/schemas/B32"
+          },
+          "other_token": {
+            "type": "string"
+          }
+        }
+      },
+      "B32": {
+        "type": "string",
+        "description": "Wrapper around a zeroizing 32-byte fixed-size array"
+      },
+      "BlobSignRequest": {
+        "type": "object",
+        "required": ["message_base64"],
+        "properties": {
+          "message_base64": {
+            "type": "string",
+            "description": "The blob to sign, encoded as a base64 string.\n\nNote that certain signing keys impose additional requirements on the contents of\nthe message. For example, Secp256k1 keys require that the message is 32 bytes long."
+          }
+        },
+        "example": {
+          "message_base64": "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTYK"
+        }
+      },
+      "BtcSighashType": {
+        "type": "string",
+        "enum": [
+          "All",
+          "None",
+          "Single",
+          "AllPlusAnyoneCanPay",
+          "NonePlusAnyoneCanPay",
+          "SinglePlusAnyoneCanPay"
+        ]
+      },
+      "BtcSignRequest": {
+        "type": "object",
+        "required": ["tx", "sig_kind"],
+        "properties": {
+          "sig_kind": {
+            "$ref": "#/components/schemas/BtcSignatureKind"
+          },
+          "tx": {
+            "type": "object",
+            "description": "The bitcoin transaction to sign"
+          }
+        }
+      },
+      "BtcSignatureKind": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["Segwit"],
+            "properties": {
+              "Segwit": {
+                "type": "object",
+                "description": "Segregated Witness",
+                "required": ["input_index", "script_code", "value", "sighash_type"],
+                "properties": {
+                  "input_index": {
+                    "type": "integer",
+                    "description": "Transaction input index",
+                    "example": 0
+                  },
+                  "script_code": {
+                    "type": "string",
+                    "description": "Script",
+                    "example": "0x76a91479091972186c449eb1ded22b78e40d009bdf008988ac"
+                  },
+                  "sighash_type": {
+                    "$ref": "#/components/schemas/BtcSighashType"
+                  },
+                  "value": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Amount in satoshis",
+                    "example": 1000000
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ClientSessionInfo": {
+        "type": "object",
+        "description": "Session information sent to the client.\nThis struct works in tandem with its server-side counterpart [`SessionData`].",
+        "required": [
+          "session_id",
+          "auth_token",
+          "refresh_token",
+          "epoch",
+          "epoch_token",
+          "auth_token_exp",
+          "refresh_token_exp"
+        ],
+        "properties": {
+          "auth_token": {
+            "type": "string",
+            "description": "Token to use for authorization."
+          },
+          "auth_token_exp": {
+            "$ref": "#/components/schemas/EpochDateTime"
+          },
+          "epoch": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Epoch at which the token was last refreshed"
+          },
+          "epoch_token": {
+            "$ref": "#/components/schemas/B32"
+          },
+          "refresh_token": {
+            "type": "string",
+            "description": "Token to use for refreshing the `(auth, refresh)` token pair"
+          },
+          "refresh_token_exp": {
+            "$ref": "#/components/schemas/EpochDateTime"
+          },
+          "session_id": {
+            "type": "string",
+            "description": "Session ID"
+          }
+        }
+      },
+      "ConfiguredMfa": {
+        "oneOf": [
+          {
+            "type": "string",
+            "enum": ["Totp"]
+          },
+          {
+            "type": "object",
+            "required": ["Fido"],
+            "properties": {
+              "Fido": {
+                "type": "string",
+                "description": "Named FIDO device (multiple can be configured per user, but the names must be different)"
+              }
+            }
+          }
+        ]
+      },
+      "CreateKeyRequest": {
+        "type": "object",
+        "required": ["chain_id", "key_type", "count", "owner"],
+        "properties": {
+          "chain_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Chain id for which the key is allowed to sign messages",
+            "example": 5,
+            "nullable": true,
+            "minimum": 0.0
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of keys to create",
+            "example": 1,
+            "maximum": 32.0,
+            "minimum": 1.0
+          },
+          "key_type": {
+            "$ref": "#/components/schemas/KeyType"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Allows users to specify a user other than themselves to receive the key",
+            "example": "User#c3b9379c-4e8c-4216-bd0a-65ace53cf98f",
+            "nullable": true
+          }
+        }
+      },
+      "CreateRoleRequest": {
+        "type": "object",
+        "description": "Optional create role request body",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "A human-readable name for the role.",
+            "example": "my_role",
+            "pattern": "^[_a-zA-Z0-9]{3,30}$"
+          }
+        }
+      },
+      "CreateTokenRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RatchetConfig"
+          },
+          {
+            "type": "object",
+            "required": ["purpose"],
+            "properties": {
+              "purpose": {
+                "type": "string",
+                "description": "A human readable description of the purpose of the key",
+                "example": "Validator Signing"
+              }
+            }
+          }
+        ]
+      },
+      "DepositTxn": {
+        "type": "object",
+        "description": "Information produced by a successful deposit",
+        "required": ["new_validator_pk", "chain_id", "deposit_txn"],
+        "properties": {
+          "chain_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Chain ID for which the deposit transaction was created",
+            "minimum": 1.0
+          },
+          "deposit_txn": {
+            "type": "object",
+            "description": "The deposit transaction. Includes only `to`, `value`, and `data` fields."
+          },
+          "new_validator_pk": {
+            "type": "string",
+            "description": "The hex-encoded compressed form of the new validator BLS public key"
+          }
+        },
+        "example": {
+          "chain_id": 5,
+          "deposit_txn": {
+            "data": "0x...",
+            "to": "0xff50ed3d0ec03ac01d4c79aad74928bff48a7b2b",
+            "value": "0x1bc16d674ec800000"
+          },
+          "new_validator_pk": "9700fbb8c906942442c2a5b3ad7498f27aedda253786a6fbaa8fef47fb7af234e50cf2cce815a553087992ae565d48da"
+        }
+      },
+      "DepositType": {
+        "type": "string",
+        "description": "The type of deposit to perform",
+        "enum": ["Canonical", "Wrapper"]
+      },
+      "Epoch": {
+        "type": "string",
+        "description": "Epoch is a quoted `uint64`.",
+        "example": "256"
+      },
+      "EpochDateTime": {
+        "type": "integer",
+        "format": "int64",
+        "description": "DateTime measured in seconds since unix epoch.\nA wrapper type for serialization that encodes a [`SystemTime`] as a [`u64`]\nrepresenting the number of seconds since [`SystemTime::UNIX_EPOCH`]."
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "description": "The structure of ErrorResponse must match the response template that AWS uses",
+        "required": ["message"],
+        "properties": {
+          "accepted": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AcceptedValue"
+              }
+            ],
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      },
+      "Eth1SignRequest": {
+        "type": "object",
+        "required": ["tx", "chain_id"],
+        "properties": {
+          "chain_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The chain id to set in the given transaction.",
+            "minimum": 1.0
+          },
+          "tx": {
+            "type": "object",
+            "description": "EIP-2718 typed transaction (see the [ethers-rs\ninterface](https://docs.rs/ethers/latest/ethers/types/struct.Eip1559TransactionRequest.html)) types, including EIP-1559 transactions (`{ \"type\": \"0x02\" ... }`), and legacy\ntransactions (`{ \"type\": \"0x00\" ... }`). All values in the transaction are expected\nto be (0x-prefixed or not) hex strings or byte arrays."
+          }
+        },
+        "example": {
+          "chain_id": 43113,
+          "tx": {
+            "chain_id": "0xa869",
+            "gas": "0x61a80",
+            "maxFeePerGas": "0x9502F900",
+            "maxPriorityFeePerGas": "0x50",
+            "nonce": "0xb",
+            "to": "0xf00ba12f00000000b4121200000f00c0ffeef00d",
+            "type": "0x02",
+            "value": "0x10000000000"
+          }
+        }
+      },
+      "Eth2SignRequest": {
+        "type": "object",
+        "required": ["network", "eth2_sign_request"],
+        "properties": {
+          "eth2_sign_request": {
+            "type": "object",
+            "description": "Subset of the Web3Signer Eth2 BLS signing request whose schema is defined\n[here](https://consensys.github.io/web3signer/web3signer-eth2.html#tag/Signing/operation/ETH2_SIGN).\nWe handle deposits and voluntary exits separately."
+          },
+          "network": {
+            "$ref": "#/components/schemas/Network"
+          }
+        },
+        "example": {
+          "eth2_sign_request": {
+            "aggregation_slot": {
+              "slot": "36"
+            },
+            "fork_info": {
+              "fork": {
+                "current_version": "0x42424242",
+                "epoch": "0",
+                "previous_version": "0x42424242"
+              },
+              "genesis_validators_root": "0x9d13d61212c067e02ce8e608a7007e2c3b02571e9e6f27ff45dfa91bf27c870b"
+            },
+            "signingRoot": "0x9c57e77c4965727542b9337df6756f948464bca3859bea6ed3c0ec6600d8982a",
+            "type": "AGGREGATION_SLOT"
+          },
+          "network": "mainnet"
+        }
+      },
+      "Fork": {
+        "type": "object",
+        "description": "Specifies a fork of the `BeaconChain`, to prevent replay attacks.\nThe schema of `Fork` is defined in the [Beacon chain\nspec](https://github.com/ethereum/consensus-specs/blob/v1.0.1/specs/phase0/beacon-chain.md#fork).",
+        "required": ["previous_version", "current_version", "epoch"],
+        "properties": {
+          "current_version": {
+            "type": "string",
+            "description": "Current fork version.",
+            "example": "0x43434343"
+          },
+          "epoch": {
+            "$ref": "#/components/schemas/Epoch"
+          },
+          "previous_version": {
+            "type": "string",
+            "description": "Previous fork version.",
+            "example": "0x42424242"
+          }
+        },
+        "example": {
+          "current_version": "0x00001020",
+          "epoch": "0",
+          "previous_version": "0x00001020"
+        }
+      },
+      "GenesisData": {
+        "type": "object",
+        "description": "Genesis data as defined in the [Beacon API\nspec](https://ethereum.github.io/beacon-APIs/#/Beacon/getGenesis).\nYou can get the genesis data from the Beacon node's `/eth/v1/beacon/genesis` end-point.\nThis struct definition is originally from lighthouse's eth2.",
+        "required": ["genesis_time", "genesis_validators_root", "genesis_fork_version"],
+        "properties": {
+          "genesis_fork_version": {
+            "type": "string",
+            "description": "Genesis fork version.",
+            "example": "0x42424242"
+          },
+          "genesis_time": {
+            "type": "string",
+            "description": "Genesis time",
+            "example": "1679326449"
+          },
+          "genesis_validators_root": {
+            "type": "string",
+            "description": "Genesis validators root.",
+            "example": "0x270d43e74ce340de4bca2b1936beca0f4f5408d9e78aec4850920baf659d5b69"
+          }
+        }
+      },
+      "GetKeysInOrgRequest": {
+        "type": "object",
+        "required": ["key_type"],
+        "properties": {
+          "key_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/KeyType"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "HeartbeatRequest": {
+        "type": "object",
+        "description": "Stats pertaining the the sender `cube3signer` instance",
+        "required": [
+          "proxy_version",
+          "num_requests",
+          "num_requests_failed",
+          "num_requests_retried",
+          "num_retries",
+          "current_num_requests_active",
+          "current_num_requests_processing"
+        ],
+        "properties": {
+          "current_num_requests_active": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of requests currently active (received but not necessarily being processed yet)"
+          },
+          "current_num_requests_processing": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of requests currently being processed by cube3signer"
+          },
+          "num_requests": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of new requests during this heartbeat period"
+          },
+          "num_requests_failed": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of requests that failed during this heartbeat period"
+          },
+          "num_requests_retried": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of requests were retried during this heartbeat period"
+          },
+          "num_retries": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of retries during this heartbeat period"
+          },
+          "num_token_refreshes": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of times auth token was refreshed during this heartbeat period"
+          },
+          "num_token_refreshes_failed": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of times auth token refresh failed during this heartbeat period"
+          },
+          "proxy_version": {
+            "type": "string",
+            "description": "Version of the proxy sending the heart beat request\n\nTODO: Make non-optional once we do not support proxies without version information",
+            "nullable": true
+          }
+        }
+      },
+      "HttpRequest": {
+        "type": "object",
+        "description": "Information about the request.\n\nCaptures all the relevant info (including the request body) about requests that require MFA.\nWe use this to verify that when a request is resumed (after obtaining necessary MFA approvals)\nit is exactly the same as it originally was.",
+        "required": ["method", "path", "body"],
+        "properties": {
+          "body": {
+            "type": "object",
+            "description": "HTTP request body",
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "description": "HTTP method of the request"
+          },
+          "path": {
+            "type": "string",
+            "description": "HTTP path of the request (including host or not?)"
+          }
+        }
+      },
+      "ImportKeyLegacyRequest": {
+        "type": "object",
+        "required": ["chain_id", "key_material", "key_type"],
+        "properties": {
+          "chain_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The chain ID of the chain that the key will be used for",
+            "example": 5,
+            "nullable": true,
+            "minimum": 0.0
+          },
+          "key_material": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RsaOaepXChaChaMaterial"
+            },
+            "description": "The key to import encrypted with the public key of the organization",
+            "maxItems": 32,
+            "minItems": 1
+          },
+          "key_type": {
+            "$ref": "#/components/schemas/KeyType"
+          }
+        }
+      },
+      "ImportKeyRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/KeyImportKey"
+          },
+          {
+            "type": "object",
+            "required": ["key_material", "key_type"],
+            "properties": {
+              "key_material": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ImportKeyRequestMaterial"
+                },
+                "description": "A set of encrypted keys to be imported"
+              },
+              "key_type": {
+                "$ref": "#/components/schemas/KeyType"
+              }
+            }
+          }
+        ]
+      },
+      "ImportKeyRequestMaterial": {
+        "type": "object",
+        "required": ["ikm_enc", "salt", "client_public_key"],
+        "properties": {
+          "client_public_key": {
+            "type": "string",
+            "description": "The client's ephemeral public key used to derive a shared key.\nThis is a base64-encoded, SEC1-encoded P384 public key."
+          },
+          "ikm_enc": {
+            "type": "string",
+            "description": "The encrypted keying material to be imported.\nThis is a base64-encoded ciphertext."
+          },
+          "salt": {
+            "type": "string",
+            "description": "A salt value used to derive a shared key.\nThis is a base64-encoded byte string."
+          }
+        }
+      },
+      "InviteRequest": {
+        "type": "object",
+        "required": ["email", "name", "skip_email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The user's email address",
+            "example": "alice@acme.com"
+          },
+          "name": {
+            "type": "string",
+            "description": "The user's full name",
+            "example": "Alice Wonderland"
+          },
+          "skip_email": {
+            "type": "boolean",
+            "description": "Skip sending an invitation email to this user if true.\n\nNOTE: this field is for internal testing use ONLY. If you do not\nsend an invitation email, the user will never be able to log in.",
+            "example": "false"
+          }
+        }
+      },
+      "KeyImportKey": {
+        "type": "object",
+        "description": "A wrapped key-import key",
+        "required": ["public_key", "sk_enc", "dk_enc", "expires"],
+        "properties": {
+          "dk_enc": {
+            "type": "string",
+            "description": "Base64-encoded, encrypted data key."
+          },
+          "expires": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Expiration timestamp expressed as seconds since the UNIX epoch.",
+            "minimum": 0.0
+          },
+          "public_key": {
+            "type": "string",
+            "description": "The ephemeral public key to which an imported key should be encrypted.\nThis is a P384 public key in base64-encoded uncompressed SECG format."
+          },
+          "sk_enc": {
+            "type": "string",
+            "description": "Base64-encoded, encrypted secret key."
+          }
+        }
+      },
+      "KeyInfo": {
+        "type": "object",
+        "required": [
+          "key_type",
+          "key_id",
+          "material_id",
+          "purpose",
+          "enabled",
+          "owner",
+          "public_key",
+          "policy"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the key is enabled (only enabled keys may be used for signing)"
+          },
+          "key_id": {
+            "type": "string",
+            "description": "The id of the key: \"Key#\" followed by a unique identifier specific to\nthe type of key (such as a public key for BLS or an ethereum address for Secp)",
+            "example": "Key#0x8e3484687e66cdd26cf04c3647633ab4f3570148"
+          },
+          "key_type": {
+            "$ref": "#/components/schemas/KeyType"
+          },
+          "material_id": {
+            "type": "string",
+            "description": "A unique identifier specific to the type of key, such as a public key or an ethereum address",
+            "example": "0x8e3484687e66cdd26cf04c3647633ab4f3570148"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Owner of the key",
+            "example": "User#c3b9379c-4e8c-4216-bd0a-65ace53cf98f"
+          },
+          "policy": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Key policy",
+            "example": []
+          },
+          "public_key": {
+            "type": "string",
+            "description": "Hex-encoded, serialized public key. The format used depends on the key type:\n- secp256k1 keys use 65-byte uncompressed SECG format;\n- BLS keys use 48-byte compressed BLS12-381 (ZCash) format;\n- ed25519 keys use the canonical 64-byte encoding specified in RFC 8032.",
+            "example": "0x04d2688b6bc2ce7f9879b9e745f3c4dc177908c5cef0c1b64cff19ae7ff27dee623c64fe9d9c325c7fbbc748bbd5f607ce14dd83e28ebbbb7d3e7f2ffb70a79431"
+          },
+          "purpose": {
+            "type": "string",
+            "description": "The purpose for which the key can be used (e.g., chain id for which the key is allowed to sign messages)",
+            "example": "Eth2Validator(1)"
+          }
+        }
+      },
+      "KeyType": {
+        "type": "string",
+        "enum": [
+          "SecpEthAddr",
+          "SecpBtc",
+          "SecpBtcTest",
+          "BlsPub",
+          "BlsInactive",
+          "Ed25519SolanaAddr",
+          "Ed25519SuiAddr",
+          "Ed25519AptosAddr"
+        ]
+      },
+      "KeyWithPolicies": {
+        "type": "object",
+        "required": ["key_id"],
+        "properties": {
+          "key_id": {
+            "type": "string",
+            "description": "Key ID",
+            "example": "Key#0x8e3484687e66cdd26cf04c3647633ab4f3570148"
+          },
+          "policy": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Policies that are checked before this key is used on behalf of this role",
+            "example": [
+              {
+                "TxReceiver": "0x8c594691c0e592ffa21f153a16ae41db5befcaaa"
+              },
+              {
+                "TxDeposit": {
+                  "kind": "Canonical"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "MemberRole": {
+        "type": "string",
+        "description": "Describes whether a user in an org is an Owner or just a regular member",
+        "enum": ["Owner", "Member", "Alien"]
+      },
+      "MfaType": {
+        "type": "string",
+        "enum": ["CubeSigner", "Totp"]
+      },
+      "Network": {
+        "type": "string",
+        "description": "Network name ('mainnet', 'prater', 'goerli')",
+        "enum": ["mainnet", "prater", "goerli"],
+        "example": "goerli"
+      },
+      "OIDCIdentity": {
+        "type": "object",
+        "description": "Represents a globally unique OIDC-authorized user by expressing the full \"path\" to a user. That is:\n\n(iss)       (sub)\nIssuer -> Subresource\n\nWe include a non-standard third-tier `disambiguator` which allows us to map\na single OIDC user to multiple `User`s in CubeSigner",
+        "required": ["iss", "sub"],
+        "properties": {
+          "disambiguator": {
+            "type": "string",
+            "description": "Free-form additional user info.",
+            "example": "null",
+            "nullable": true
+          },
+          "iss": {
+            "type": "string",
+            "description": "The root-level issuer who administrates this user. Frome the OIDC spec:\nIssuer Identifier for the Issuer of the response. The iss\nvalue is a case sensitive URL using the https scheme that contains\nscheme, host, and optionally, port number and path components and\nno query or fragment components.",
+            "example": "https://accounts.google.com"
+          },
+          "sub": {
+            "type": "string",
+            "description": "From the OIDC spec:\n\nA locally unique and never reassigned identifier within the Issuer for\nthe End-User, which is intended to be consumed by the Client, e.g.,\n24400320 or AItOawmwtWwcT0k51BayewNvutrJUqsvl6qs7A4. It MUST NOT exceed\n255 ASCII characters in length. The sub value is a case sensitive\nstring.",
+            "example": "10769150350006150715113082367"
+          }
+        }
+      },
+      "OidcLoginRequest": {
+        "type": "object",
+        "required": ["scopes"],
+        "properties": {
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Controls what capabilities this session will have.",
+            "example": ["sign:*"],
+            "minItems": 1
+          }
+        }
+      },
+      "OidcLoginResponse": {
+        "type": "object",
+        "required": ["token"],
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Token to be used for signing auth. Requests to signing endpoints\nshould include this value in the `Authorization` header"
+          }
+        }
+      },
+      "OrgInfo": {
+        "type": "object",
+        "required": [
+          "org_id",
+          "key_import_key",
+          "enabled",
+          "last_unstake",
+          "last_unstake_day_count",
+          "kwk_id"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "When false, all cryptographic operations involving keys in this org are disabled."
+          },
+          "key_import_key": {
+            "type": "string",
+            "description": "The RSA public key to use when importing keys into this organization. This string is the\nhex encoding of the DER representation of the key.",
+            "example": "30820222300d06092a864886f70d01010105000382020f003082020a0282020100c89765b8f347caafbec09fcb17740e032d854ec99f2d9c16167be335339b4fdeba18a7f13d8e8b7ae7d689cab63d8ecdf548f4746eacaf95b61fef76ade9f81b3c038891c52542fd352697b618afbea6103723c28f2db450e9d852be16a4dc2cbc9442da9a6610044009e056ba90728f0b9888d9b036e493aaed168ccf930fa2f730b17eb3ad6f455a792b762c47f3d3c6b7a7c458556a592e688791599a576bf2149d8e9614db775e7a48602d237a347d5399c681f7f7d9c81f6a64e7cfd356bba545d45e5023ca1f09a66a1d4550f61cf2c4367e14997b5d749bb0326a44d058119e8caf7fd79d517eb2d11dddb2db329f350698f0f978d5e150bb402c8bc4c5ec36d6f38db3f3a204813cda9f52dbcee809204f8e35a455c0e110e10eec41f734f2d55a058a7a21fa90602f94da6de2378ff61e7b3550b77e53d75d7b3d3b39ccab0e5101b916dab01da096f7627175d5b68a1a6464ce5be3e95e7c464d69eb0b675057705c11bc79c3543313b0d9c703c50dc1a16dd9b55e5599e3b02e527b85938e7b81c65e56960bcd7c7a266b07dc05107fd0d7d3c208a878eb0fc74b0d007f421d0c5b28cf78eb441aa0166dceeeac255d68622492f9b526ae13c93754ea8eda96f3b764ba931f8d49c7de8b00ac53d993ab9b08fd2892d8e82cc1a9746f0b426b19256d13d780445e150ce81da0b3c96e32559cb47cb5cb93f805650203010001"
+          },
+          "kwk_id": {
+            "type": "string",
+            "description": "The organization's universally unique key-wrapping-key identifier.\nThis value is required when setting up key export.",
+            "example": "mrk-fce09525e81587d23520f11e07e2e9d9"
+          },
+          "last_unstake": {
+            "type": "string",
+            "description": "Date/time (in UTC) when last 'unstake' was performed. Unix epoch if none.",
+            "example": "TODO"
+          },
+          "last_unstake_day_count": {
+            "type": "integer",
+            "format": "int32",
+            "description": "How many 'unstake' calls happened on the day when `last_unstake` was performed."
+          },
+          "name": {
+            "type": "string",
+            "description": "The human-readable name for the org",
+            "example": "my_org_name",
+            "nullable": true
+          },
+          "org_id": {
+            "type": "string",
+            "description": "The ID of the organization",
+            "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+          },
+          "policy": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Org-wide policies that are checked before a key is used for signing",
+            "example": [
+              {
+                "MaxDailyUnstake": 5
+              }
+            ]
+          }
+        }
+      },
+      "RatchetConfig": {
+        "type": "object",
+        "properties": {
+          "auth_lifetime": {
+            "$ref": "#/components/schemas/Seconds"
+          },
+          "refresh_lifetime": {
+            "$ref": "#/components/schemas/Seconds"
+          },
+          "session_lifetime": {
+            "$ref": "#/components/schemas/Seconds"
+          }
+        }
+      },
+      "Receipt": {
+        "type": "object",
+        "description": "Receipt that an MFA request was approved.",
+        "required": ["confirmation", "final_approver", "timestamp"],
+        "properties": {
+          "confirmation": {
+            "type": "string",
+            "description": "Confirmation code the user needs to present when resuming the original request.",
+            "example": "ba1d75dd-d999-4c1b-944d-25c25440c8af"
+          },
+          "final_approver": {
+            "type": "string",
+            "description": "The ID of the logged-in user whose action created this approval."
+          },
+          "timestamp": {
+            "$ref": "#/components/schemas/EpochDateTime"
+          }
+        }
+      },
+      "RoleInfo": {
+        "type": "object",
+        "required": ["role_id", "enabled", "users", "keys"],
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the role is enabled",
+            "example": "true"
+          },
+          "keys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyWithPolicies"
+            },
+            "description": "The CubeSigner IDs of the keys"
+          },
+          "name": {
+            "type": "string",
+            "description": "The human-readable name for the role (must be alphanumeric)",
+            "example": "my_role",
+            "nullable": true
+          },
+          "role_id": {
+            "type": "string",
+            "description": "The ID of the role",
+            "example": "Role#bfe3eccb-731e-430d-b1e5-ac1363e6b06b"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The list of users with access to the role",
+            "example": [
+              "User#c3b9379c-4e8c-4216-bd0a-65ace53cf98f",
+              "User#5593c25b-52e2-4fb5-b39b-96d41d681d82"
+            ]
+          }
+        }
+      },
+      "RsaOaepXChaChaMaterial": {
+        "type": "object",
+        "description": "Encrypted key material for import using hybrid encryption.\n\nThe imported keying material is encrypted using [XChaCha20Poly1305], which\nwe choose for its speed and side channel resistance, its ability to encrypt\nvery long messages, and its safety when using random nonces even for a large\nnumber of messages. The latter should not happen in this case, but the cost\nis negligible and the benefit is that we know it's safe to use random nonces.\n\nThe XChaCha key is encrypted using [RSAES-OAEP-SHA256], which we choose because\nit's the best of the [available options for asymmetric encryption][kmsopts]\nin AWS KMS.\n\n[XChaCha20Poly1305]: https://doc.libsodium.org/secret-key_cryptography/aead/chacha20-poly1305/xchacha20-poly1305_construction\n[RSAES-OAEP-SHA256]: https://www.rfc-editor.org/rfc/rfc8017#section-7.1\n[kmsopts]: https://docs.aws.amazon.com/kms/latest/developerguide/asymmetric-key-specs.html",
+        "required": ["ikm_enc", "nonce", "kwk_enc"],
+        "properties": {
+          "ikm_enc": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "The keying material to be imported, encrypted with\n[XChaCha20Poly1305](https://doc.libsodium.org/secret-key_cryptography/aead/chacha20-poly1305/xchacha20-poly1305_construction)."
+          },
+          "kwk_enc": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "The key-wrapping key used to encrypt `ikm_enc`, encrypted with\n[RSAES-OAEP-SHA256](https://www.rfc-editor.org/rfc/rfc8017#section-7.1)."
+          },
+          "nonce": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "The nonce used to generate `ikm_enc`."
+          }
+        }
+      },
+      "Seconds": {
+        "type": "integer",
+        "format": "int64",
+        "description": "Duration measured in seconds\nA wrapper type for serialization that encodes a `Duration` as a `u64` representing the number of seconds."
+      },
+      "SignRequest": {
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "message": {
+            "type": "object"
+          }
+        }
+      },
+      "SolanaSignRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SignRequest"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "StakeRequest": {
+        "type": "object",
+        "required": ["chain_id", "withdrawal_addr", "validator_key", "deposit_type", "unsafe_conf"],
+        "properties": {
+          "chain_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The chain on which we will deposit",
+            "example": 5
+          },
+          "deposit_type": {
+            "$ref": "#/components/schemas/DepositType"
+          },
+          "unsafe_conf": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UnsafeConf"
+              }
+            ],
+            "nullable": true
+          },
+          "validator_key": {
+            "type": "string",
+            "description": "The validator BLS public key to use, or `None` to generate a fresh one.",
+            "example": "0xa99a76ed7796f7be22d5b7e85deeb7c5677e88e511e0b337618f8c4eb61349b4bf2d153f649f7b53359fe8b94a38e44c",
+            "nullable": true
+          },
+          "withdrawal_addr": {
+            "type": "string",
+            "description": "The ethereum address to which withdrawn funds go",
+            "example": "0x8e3484687e66cdd26cf04c3647633ab4f3570148"
+          }
+        }
+      },
+      "Status": {
+        "type": "object",
+        "required": ["count", "num_auth_factors", "allowed_approvers", "approved_by"],
+        "properties": {
+          "allowed_approvers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Users who are allowed to approve. Must be non-empty."
+          },
+          "allowed_mfa_types": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MfaType"
+            },
+            "description": "Allowed approval types. When omitted, defaults to any.",
+            "nullable": true
+          },
+          "approved_by": {
+            "type": "object",
+            "description": "Users who have already approved",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/components/schemas/ApprovalInfo"
+              }
+            }
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "description": "How many users must approve"
+          },
+          "num_auth_factors": {
+            "type": "integer",
+            "format": "int32",
+            "description": "How many auth factors to require per user"
+          }
+        }
+      },
+      "TokenInfo": {
+        "type": "object",
+        "required": ["hash", "purpose"],
+        "properties": {
+          "hash": {
+            "type": "string",
+            "description": "Session ID. Use it to revoke a session. Cannot be used for auth."
+          },
+          "purpose": {
+            "type": "string",
+            "description": "Tokens purpose"
+          }
+        }
+      },
+      "TotpApproveRequest": {
+        "type": "object",
+        "required": ["code"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "TOTP verification code"
+          }
+        }
+      },
+      "UnsafeConf": {
+        "type": "object",
+        "description": "Options that should be set only for local devnet testing.",
+        "required": ["deposit_contract_addr", "genesis_fork_version"],
+        "properties": {
+          "deposit_contract_addr": {
+            "type": "string",
+            "description": "The hex-encoded address of the deposit contract. If omitted, inferred from `chain_id`",
+            "example": "0xff50ed3d0ec03ac01d4c79aad74928bff48a7b2b",
+            "nullable": true
+          },
+          "genesis_fork_version": {
+            "type": "string",
+            "description": "The hex-encoded 4-byte fork version",
+            "example": "0x00001020",
+            "nullable": true
+          }
+        }
+      },
+      "UnstakeRequest": {
+        "type": "object",
+        "description": "Unstake message request.",
+        "required": ["network", "fork", "epoch", "validator_index", "genesis_data"],
+        "properties": {
+          "epoch": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Epoch"
+              }
+            ],
+            "nullable": true
+          },
+          "fork": {
+            "$ref": "#/components/schemas/Fork"
+          },
+          "genesis_data": {
+            "$ref": "#/components/schemas/GenesisData"
+          },
+          "network": {
+            "$ref": "#/components/schemas/Network"
+          },
+          "validator_index": {
+            "type": "string",
+            "description": "Validator index (`uint64`) to exit. You can get the validator index from the Beacon node's\n`/eth/v1/beacon/states/head/validators/{pubkey}` end-point. This end point returns an\nobject that contains information about the validator (whose public key is `{pubkey}`),\nincluding the validator index. The schema of this end-point is defined\n[here](https://ethereum.github.io/beacon-APIs/#/Beacon/getStateValidator).",
+            "example": "31337"
+          }
+        },
+        "example": {
+          "epoch": "256",
+          "fork": {
+            "current_version": "0x00001020",
+            "epoch": "0",
+            "previous_version": "0x00001020"
+          },
+          "genesis_data": {
+            "genesis_fork_version": "0x00001020",
+            "genesis_time": "1679541642",
+            "genesis_validators_root": "0x270d43e74ce340de4bca2b1936beca0f4f5408d9e78aec4850920baf659d5b69"
+          },
+          "network": "goerli",
+          "validator_index": "0"
+        }
+      },
+      "UpdateKeyRequest": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "If set, updates the keys's `enabled` property to this value.\nOnce disabled, a key cannot be used for signing.",
+            "nullable": true
+          },
+          "owner": {
+            "type": "string",
+            "description": "If set, updates key's owner to this value.\nThe new owner must be an existing user who is a member of the same org.",
+            "example": "User#c3b9379c-4e8c-4216-bd0a-65ace53cf98f",
+            "nullable": true
+          },
+          "policy": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "If set, update this key's policies (old policies will be overwritten!).",
+            "example": [],
+            "nullable": true
+          }
+        }
+      },
+      "UpdateOrgRequest": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "If set, update this org's `enabled` field to this value.",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "If set, update this org's alias.  Org aliases are globally unique.",
+            "example": "my_org",
+            "nullable": true
+          },
+          "policy": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "If set, update this org's policies (old policies will be overwritten!).",
+            "example": [
+              {
+                "MaxDailyUnstake": 5
+              },
+              {
+                "OriginAllowlist": ["https://example.com"]
+              },
+              {
+                "SourceIpAllowlist": ["10.1.2.3/8", "169.254.17.1/16"]
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "UpdateRoleRequest": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "If set, updates the role's `enabled` property to this value.\nOnce disabled, a role cannot be used; and it's tokens cannot be used for signing.",
+            "nullable": true
+          }
+        }
+      },
+      "UserIdInfo": {
+        "type": "object",
+        "required": ["id", "email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The user's email",
+            "example": "alice@example.com"
+          },
+          "id": {
+            "type": "string",
+            "description": "The id of the user",
+            "example": "User#c3b9379c-4e8c-4216-bd0a-65ace53cf98f"
+          }
+        }
+      },
+      "UserInfo": {
+        "type": "object",
+        "required": ["user_id", "email", "org_ids", "mfa"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "alice@example.com"
+          },
+          "mfa": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfiguredMfa"
+            },
+            "description": "All multi-factor authentication methods configured for this user"
+          },
+          "org_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "All organizations the user belongs to",
+            "example": ["Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"]
+          },
+          "user_id": {
+            "type": "string",
+            "description": "The id of the currently logged in user",
+            "example": "User#c3b9379c-4e8c-4216-bd0a-65ace53cf98f"
+          }
+        }
+      },
+      "VoluntaryExit": {
+        "type": "object",
+        "description": "An exit voluntarily submitted a validator who wishes to withdraw.\nThe schema for this message is defined\n[here](https://github.com/ethereum/consensus-specs/blob/v1.0.1/specs/phase0/beacon-chain.md#signedvoluntaryexit).",
+        "required": ["epoch", "validator_index"],
+        "properties": {
+          "epoch": {
+            "$ref": "#/components/schemas/Epoch"
+          },
+          "validator_index": {
+            "type": "string",
+            "description": "Index of the exiting validator.",
+            "example": "256"
+          }
+        }
+      }
+    },
+    "responses": {
+      "AddThirdPartyUserResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["user_id"],
+              "properties": {
+                "user_id": {
+                  "type": "string",
+                  "example": "User#c3b9379c-4e8c-4216-bd0a-65ace53cf98f"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BlobSignResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["signature"],
+              "properties": {
+                "signature": {
+                  "type": "string",
+                  "description": "The hex-encoded signature."
+                }
+              }
+            }
+          }
+        }
+      },
+      "BtcSignResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["signature"],
+              "properties": {
+                "signature": {
+                  "type": "string",
+                  "description": "The hex-encoded signature in DER format.",
+                  "example": "0x3045022100e12be3904f665f755e106741680548fefc9febf4cff31c5c0ee4627b3c1b35fe022066fde9a0b17e4cd38da983fb0d604294f00d0bd47fcb649c5216f3a2e8b7ad2d01"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreateKeyImportKeyResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/KeyImportKey"
+                },
+                {
+                  "type": "object",
+                  "required": ["enclave_attestation", "enclave_signature"],
+                  "properties": {
+                    "enclave_attestation": {
+                      "type": "string",
+                      "description": "An attestation document from a secure enclave, including an\nRSA signing key used to sign the contents of this message."
+                    },
+                    "enclave_signature": {
+                      "type": "string",
+                      "description": "An RSA-PSS-SHA256 signature on the public key and encrypted\nsecrets attesting to their generation inside a secure enclave."
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "CreateKeyResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["keys"],
+              "properties": {
+                "keys": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyInfo"
+                  },
+                  "description": "The info about the created keys"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreateRoleResponse": {
+        "description": "The newly created role information",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "description": "The newly created role information",
+              "required": ["role_id"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "A human-readable name for the role.",
+                  "example": "my_role",
+                  "nullable": true,
+                  "pattern": "^[a-zA-Z0-9_]{3,30}$"
+                },
+                "role_id": {
+                  "type": "string",
+                  "description": "The id of the newly created role",
+                  "example": "Role#bfe3eccb-731e-430d-b1e5-ac1363e6b06b"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreateTokenResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["token", "session_info"],
+              "properties": {
+                "session_info": {
+                  "$ref": "#/components/schemas/ClientSessionInfo"
+                },
+                "token": {
+                  "type": "string",
+                  "description": "Token to be used for signing auth. Requests to signing endpoints\nshould include this value in the `Authorization` header"
+                }
+              }
+            }
+          }
+        }
+      },
+      "EmptyImpl": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["status"],
+              "properties": {
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Eth1SignResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["rlp_signed_tx"],
+              "properties": {
+                "rlp_signed_tx": {
+                  "type": "string",
+                  "description": "Hex-encoded RLP encoding of the transaction and its signature",
+                  "example": "0x22895118000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000001201d58656b0e22aaa68fdc692db41979098c3886ed33015d7467de9211609cdac000000000000000000000000000000000000000000000000000000000000000308b0c2900324d3ff9adfba7fdfe5af3f9b2cdbeef7b280437bbf1b1c59a093d615afe3e5dfed9622b540cdd9b49b3c5ad00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002001000000000000000000000049011adbcc3bc9c0307bb07f37dda1a1a9c69d2e0000000000000000000000000000000000000000000000000000000000000060903db8525674b8e7904f9b7d7d9ec55a0a42d33cf58be25469b0c21bbb6d06172bc5bb5fd1aed8e4f35936968958116b0619553c2cb1c52e7323074c6f8eb3d5a7074fc6580148df907837fa3b164ad7fbc2288dad1e8a5b021095b57c8a36d4"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Eth2SignResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["signature"],
+              "properties": {
+                "signature": {
+                  "type": "string",
+                  "description": "Hex encoded signature prefixed with 0x e.g. \"0x0000...\"",
+                  "example": "0xb4f2ef9d12a54e1f569596c07c97d6d730535b6ffc0d287761dc78103a86326782471a04c75ce7a6faea08ca9a4a0830031cdcb893da8711d54aa22619f1a7e71b8185ddf4c6bfd9babbd735960e35e56bd6eeb89625b04850e7a9ef8846e549"
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetKeysInOrgResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["keys"],
+              "properties": {
+                "keys": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetUsersInOrgResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["users"],
+              "properties": {
+                "users": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserIdInfo"
+                  },
+                  "description": "The list of users in the org"
+                }
+              }
+            }
+          }
+        }
+      },
+      "KeyImportKey": {
+        "description": "A wrapped key-import key",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "description": "A wrapped key-import key",
+              "required": ["public_key", "sk_enc", "dk_enc", "expires"],
+              "properties": {
+                "dk_enc": {
+                  "type": "string",
+                  "description": "Base64-encoded, encrypted data key."
+                },
+                "expires": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "Expiration timestamp expressed as seconds since the UNIX epoch.",
+                  "minimum": 0.0
+                },
+                "public_key": {
+                  "type": "string",
+                  "description": "The ephemeral public key to which an imported key should be encrypted.\nThis is a P384 public key in base64-encoded uncompressed SECG format."
+                },
+                "sk_enc": {
+                  "type": "string",
+                  "description": "Base64-encoded, encrypted secret key."
+                }
+              }
+            }
+          }
+        }
+      },
+      "KeyInfo": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "key_type",
+                "key_id",
+                "material_id",
+                "purpose",
+                "enabled",
+                "owner",
+                "public_key",
+                "policy"
+              ],
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Whether the key is enabled (only enabled keys may be used for signing)"
+                },
+                "key_id": {
+                  "type": "string",
+                  "description": "The id of the key: \"Key#\" followed by a unique identifier specific to\nthe type of key (such as a public key for BLS or an ethereum address for Secp)",
+                  "example": "Key#0x8e3484687e66cdd26cf04c3647633ab4f3570148"
+                },
+                "key_type": {
+                  "$ref": "#/components/schemas/KeyType"
+                },
+                "material_id": {
+                  "type": "string",
+                  "description": "A unique identifier specific to the type of key, such as a public key or an ethereum address",
+                  "example": "0x8e3484687e66cdd26cf04c3647633ab4f3570148"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "Owner of the key",
+                  "example": "User#c3b9379c-4e8c-4216-bd0a-65ace53cf98f"
+                },
+                "policy": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "description": "Key policy",
+                  "example": []
+                },
+                "public_key": {
+                  "type": "string",
+                  "description": "Hex-encoded, serialized public key. The format used depends on the key type:\n- secp256k1 keys use 65-byte uncompressed SECG format;\n- BLS keys use 48-byte compressed BLS12-381 (ZCash) format;\n- ed25519 keys use the canonical 64-byte encoding specified in RFC 8032.",
+                  "example": "0x04d2688b6bc2ce7f9879b9e745f3c4dc177908c5cef0c1b64cff19ae7ff27dee623c64fe9d9c325c7fbbc748bbd5f607ce14dd83e28ebbbb7d3e7f2ffb70a79431"
+                },
+                "purpose": {
+                  "type": "string",
+                  "description": "The purpose for which the key can be used (e.g., chain id for which the key is allowed to sign messages)",
+                  "example": "Eth2Validator(1)"
+                }
+              }
+            }
+          }
+        }
+      },
+      "KeyInfos": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["keys"],
+              "properties": {
+                "keys": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ListRolesResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["roles"],
+              "properties": {
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RoleInfo"
+                  },
+                  "description": "All roles in an organization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "ListTokensResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["tokens"],
+              "properties": {
+                "tokens": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TokenInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "MfaRequestInfo": {
+        "description": "Returned as a response from multiple routes (e.g., 'get mfa', 'approve mfa', 'approve totp').",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "description": "Returned as a response from multiple routes (e.g., 'get mfa', 'approve mfa', 'approve totp').",
+              "required": ["id", "expires_at", "request", "status", "receipt"],
+              "properties": {
+                "expires_at": {
+                  "$ref": "#/components/schemas/EpochDateTime"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "Approval request ID."
+                },
+                "receipt": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Receipt"
+                    }
+                  ],
+                  "nullable": true
+                },
+                "request": {
+                  "$ref": "#/components/schemas/HttpRequest"
+                },
+                "status": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "OidcLoginResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["token"],
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "description": "Token to be used for signing auth. Requests to signing endpoints\nshould include this value in the `Authorization` header"
+                }
+              }
+            }
+          }
+        }
+      },
+      "OrgInfo": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "org_id",
+                "key_import_key",
+                "enabled",
+                "last_unstake",
+                "last_unstake_day_count",
+                "kwk_id"
+              ],
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "When false, all cryptographic operations involving keys in this org are disabled."
+                },
+                "key_import_key": {
+                  "type": "string",
+                  "description": "The RSA public key to use when importing keys into this organization. This string is the\nhex encoding of the DER representation of the key.",
+                  "example": "30820222300d06092a864886f70d01010105000382020f003082020a0282020100c89765b8f347caafbec09fcb17740e032d854ec99f2d9c16167be335339b4fdeba18a7f13d8e8b7ae7d689cab63d8ecdf548f4746eacaf95b61fef76ade9f81b3c038891c52542fd352697b618afbea6103723c28f2db450e9d852be16a4dc2cbc9442da9a6610044009e056ba90728f0b9888d9b036e493aaed168ccf930fa2f730b17eb3ad6f455a792b762c47f3d3c6b7a7c458556a592e688791599a576bf2149d8e9614db775e7a48602d237a347d5399c681f7f7d9c81f6a64e7cfd356bba545d45e5023ca1f09a66a1d4550f61cf2c4367e14997b5d749bb0326a44d058119e8caf7fd79d517eb2d11dddb2db329f350698f0f978d5e150bb402c8bc4c5ec36d6f38db3f3a204813cda9f52dbcee809204f8e35a455c0e110e10eec41f734f2d55a058a7a21fa90602f94da6de2378ff61e7b3550b77e53d75d7b3d3b39ccab0e5101b916dab01da096f7627175d5b68a1a6464ce5be3e95e7c464d69eb0b675057705c11bc79c3543313b0d9c703c50dc1a16dd9b55e5599e3b02e527b85938e7b81c65e56960bcd7c7a266b07dc05107fd0d7d3c208a878eb0fc74b0d007f421d0c5b28cf78eb441aa0166dceeeac255d68622492f9b526ae13c93754ea8eda96f3b764ba931f8d49c7de8b00ac53d993ab9b08fd2892d8e82cc1a9746f0b426b19256d13d780445e150ce81da0b3c96e32559cb47cb5cb93f805650203010001"
+                },
+                "kwk_id": {
+                  "type": "string",
+                  "description": "The organization's universally unique key-wrapping-key identifier.\nThis value is required when setting up key export.",
+                  "example": "mrk-fce09525e81587d23520f11e07e2e9d9"
+                },
+                "last_unstake": {
+                  "type": "string",
+                  "description": "Date/time (in UTC) when last 'unstake' was performed. Unix epoch if none.",
+                  "example": "TODO"
+                },
+                "last_unstake_day_count": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "How many 'unstake' calls happened on the day when `last_unstake` was performed."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The human-readable name for the org",
+                  "example": "my_org_name",
+                  "nullable": true
+                },
+                "org_id": {
+                  "type": "string",
+                  "description": "The ID of the organization",
+                  "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+                },
+                "policy": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "description": "Org-wide policies that are checked before a key is used for signing",
+                  "example": [
+                    {
+                      "MaxDailyUnstake": 5
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "RefreshResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["token", "session_info"],
+              "properties": {
+                "session_info": {
+                  "$ref": "#/components/schemas/ClientSessionInfo"
+                },
+                "token": {
+                  "type": "string",
+                  "description": "New token to be used for signing auth. Requests to signing endpoints\nshould include this value in the `Authorization` header"
+                }
+              }
+            }
+          }
+        }
+      },
+      "RevokeTokenResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/TokenInfo"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "RevokeTokensResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["revoked"],
+              "properties": {
+                "revoked": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TokenInfo"
+                  },
+                  "description": "Tokens that were revoked."
+                }
+              }
+            }
+          }
+        }
+      },
+      "RoleInfo": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["role_id", "enabled", "users", "keys"],
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Whether the role is enabled",
+                  "example": "true"
+                },
+                "keys": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyWithPolicies"
+                  },
+                  "description": "The CubeSigner IDs of the keys"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The human-readable name for the role (must be alphanumeric)",
+                  "example": "my_role",
+                  "nullable": true
+                },
+                "role_id": {
+                  "type": "string",
+                  "description": "The ID of the role",
+                  "example": "Role#bfe3eccb-731e-430d-b1e5-ac1363e6b06b"
+                },
+                "users": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "The list of users with access to the role",
+                  "example": [
+                    "User#c3b9379c-4e8c-4216-bd0a-65ace53cf98f",
+                    "User#5593c25b-52e2-4fb5-b39b-96d41d681d82"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "SolanaSignResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["signature"],
+              "properties": {
+                "signature": {
+                  "type": "string",
+                  "description": "The hex-encoded signature."
+                }
+              }
+            }
+          }
+        }
+      },
+      "StakeResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["deposit_tx", "created_validator_key_id"],
+              "properties": {
+                "created_validator_key_id": {
+                  "type": "string",
+                  "description": "The validator key id (\"Key#...\")",
+                  "example": "Key#db1731f8-3659-45c0-885b-e11e1f5b7be2"
+                },
+                "deposit_tx": {
+                  "$ref": "#/components/schemas/DepositTxn"
+                }
+              }
+            }
+          }
+        }
+      },
+      "TotpInfo": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["totp_url"],
+              "properties": {
+                "totp_url": {
+                  "type": "string",
+                  "description": "Standard TOTP url which includes everything needed to initialize TOTP.",
+                  "example": "otpauth://totp/Cubist:alice-%40example.com?secret=DAHF7KCOTQWSOMK4XFEMNHXO4J433OD7&issuer=Cubist"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UnstakeResponse": {
+        "description": "Unstake responses are signed voluntary exit messages.\nThe schema for this message is defined\n[here](https://github.com/ethereum/consensus-specs/blob/v1.0.1/specs/phase0/beacon-chain.md#signedvoluntaryexit).\nThis message can be directly POSTed to the Beacon node's\n`/eth/v1/beacon/pool/voluntary_exits` end-point (see expected schema\n[here](https://ethereum.github.io/beacon-APIs/#/Beacon/submitPoolVoluntaryExit)).",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "description": "Unstake responses are signed voluntary exit messages.\nThe schema for this message is defined\n[here](https://github.com/ethereum/consensus-specs/blob/v1.0.1/specs/phase0/beacon-chain.md#signedvoluntaryexit).\nThis message can be directly POSTed to the Beacon node's\n`/eth/v1/beacon/pool/voluntary_exits` end-point (see expected schema\n[here](https://ethereum.github.io/beacon-APIs/#/Beacon/submitPoolVoluntaryExit)).",
+              "required": ["message", "signature"],
+              "properties": {
+                "message": {
+                  "$ref": "#/components/schemas/VoluntaryExit"
+                },
+                "signature": {
+                  "type": "string",
+                  "description": "BLS signature.",
+                  "example": "0x910c7cd537ed91cc8c4a82f3cbd832e9be8c24a22e9c86df479f7ce42025ea6a09619b418b666a060e260d2aae31b8e50e9d05ca3442c7eed3b507e5207e14674275f68c2ba84c4bf6b8dd364a304acac8cfab3681e2514b4400f9242bc61164"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UpdateOrgResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["org_id"],
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "The new value of the 'enabled' property",
+                  "nullable": true
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The new human-readable name for the org (must be alphanumeric)",
+                  "example": "my_org_name",
+                  "nullable": true
+                },
+                "org_id": {
+                  "type": "string",
+                  "description": "The ID of the organization",
+                  "example": "Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"
+                },
+                "policy": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "description": "The new value of org-wide policies",
+                  "example": [
+                    {
+                      "MaxDailyUnstake": 5
+                    },
+                    {
+                      "OriginAllowlist": ["https://example.com"]
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "UserInfo": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["user_id", "email", "org_ids", "mfa"],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "alice@example.com"
+                },
+                "mfa": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConfiguredMfa"
+                  },
+                  "description": "All multi-factor authentication methods configured for this user"
+                },
+                "org_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "All organizations the user belongs to",
+                  "example": ["Org#124dfe3e-3bbd-487d-80c0-53c55e8ab87a"]
+                },
+                "user_id": {
+                  "type": "string",
+                  "description": "The id of the currently logged in user",
+                  "example": "User#c3b9379c-4e8c-4216-bd0a-65ace53cf98f"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Cognito": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Management API end-points use AWS Cognito for authorization. Specifically, with each request you need to use the \\`id_token\\` from your management session (which you get with `cs login`)"
+      },
+      "Oidc": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "OIDC tokens allow users to authenticate using a third-party service. These are exchanged for signer session tokens."
+      },
+      "SignerAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Signing API end-points use session tokens for auth. Specifically, with each request you need to use the \\`token\\` from your signer session (which you create with `cs token create`)."
+      }
+    }
+  },
+  "security": [
+    {
+      "Cognito": []
+    }
+  ]
+}
