@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "es2021",
+    "module": "commonjs",
+    "declaration": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": false,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "./dist"
+  },
+  "typedocOptions": {
+    "out": "./docs",
+    "excludeInternal": true,
+    "excludePrivate": true,
+    "excludeProtected": true,
+    "entryPoints": ["src/index.ts", "src/env.ts", "src/schema.ts"]
+  },
+  "exclude": ["spec", "node_modules", "dist"],
+  "include": ["src/**/*.ts"]
+}

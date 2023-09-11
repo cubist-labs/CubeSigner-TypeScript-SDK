@@ -1,0 +1,7 @@
+**/dist/
+**/node_modules/
+**/.eslintrc.js
+**/jest.config.js
+**/snap.config.js
+src/schema.ts
+**/package-lock.json
