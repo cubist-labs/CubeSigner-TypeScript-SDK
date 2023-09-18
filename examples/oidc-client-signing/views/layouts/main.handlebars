@@ -1,0 +1,95 @@
+<html>
+  <body>
+    <script src="/sdk.js" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="g_id_onload"
+        data-client_id="{{clientId}}"
+        data-context="signin"
+        data-ux_mode="popup"
+        data-callback="onLogin"
+        data-auto_select="true"
+        data-itp_support="true">
+    </div>
+
+    <div class="g_id_signin"
+        data-type="standard"
+        data-shape="rectangular"
+        data-theme="outline"
+        data-text="signin_with"
+        data-size="large"
+        data-logo_alignment="left">
+    </div>
+
+    <script>
+      const orgId = "{{orgId}}";
+
+      /** Handle login callback */
+      async function onLogin(res) {
+        const oidcToken = res.credential;
+        const payload = JSON.parse(atob(oidcToken.split(".")[1]));
+        console.log('Create user...');
+        const response = await fetch('/createUser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: payload.email,
+            iss: payload.iss,
+            sub: payload.sub,
+          })
+        });
+        if (response.status !== 200) {
+          console.log('Error creating user');
+          return;
+        }
+        // hide sign-in button
+        document.getElementsByClassName('g_id_signin')[0].style.display = 'none';
+        // show submit-transaction form
+        const txForm = document.getElementById('txForm');
+        txForm.style.display = 'block';
+        txForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent the default form submission behavior.
+            await signTransaction(oidcToken,
+              document.getElementById("to").value,
+              document.getElementById("value").value);
+        });
+      }
+
+      /** Sign a transaction using the given oidc token */
+      async function signTransaction(oidcToken, to, value) {
+        const signReq = {
+          chain_id: 1,
+          tx: {
+            type: "0x00",
+            gas: "0x61a80",
+            gasPrice: "0x77359400",
+            nonce: "0",
+            to,
+            value
+          },
+        };
+        // Create oidc-based signer session
+        const cubesigner = new cs.CubeSigner();
+        const oidcSession = new cs.SignerSession(await cubesigner.oidcAuth(oidcToken, orgId, ["sign:*"]));
+        // Just grab the first key for the user
+        const key = (await oidcSession.keys())[0];
+        // Sign the transaction
+        const sig = (await oidcSession.signEvm(key.material_id, signReq)).data();
+        alert(`Signed transaction: ${sig.rlp_signed_tx}`);
+      }
+    </script>
+
+    <form id="txForm" style="display: none;">
+      <label for="value">Value (in gwei):</label>
+      <input type="text" id="value" name="value" value="0x001">
+
+      <label for="to">To:</label>
+      <input type="text" id="to" name="to" value="0x66e2b61f60c1c473ee2bcf850185648ac3762410">
+
+      <input type="submit" value="Sign transaction">
+    </form>
+
+    {{{body}}}
+  </body>
+</html>
