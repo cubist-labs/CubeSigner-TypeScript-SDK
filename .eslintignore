@@ -1,0 +1,5 @@
+**/dist
+**/node_modules
+**/jest.config.ts
+src/schema.ts
+scripts/readme_test_template/**
