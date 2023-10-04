@@ -1,0 +1,198 @@
+<html>
+  <style>
+    .signingButtons {
+      width: 215px;
+    }
+    .facebook button {
+      background-color: #0766FF;
+      color: white;
+      border-radius: 5px;
+      padding: 10px;
+      border: none;
+      width: 215px;
+      margin-top: 10px;
+    }
+  </style>
+
+  {{!-- Google --}}
+  <script src="/sdk.js" async defer></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+    function onGoogleLogin(res) {
+      const oidcToken = res.credential;
+      handleOidcToken(oidcToken);
+    }
+  </script>
+
+  {{!-- Facebook --}}
+  <script>
+    function randomString(length) {
+        const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+        let randomString = "";
+        for (let i = 0; i < length; i++) {
+            randomString += characters[Math.floor(Math.random() * characters.length)];
+        }
+        return randomString;
+    };
+
+    /* Manual implementation of OIDC flow as describe in https://developers.secure.facebook.com/docs/facebook-login/guides/advanced/oidc-token */
+    function doFBSignIn() {
+      // The redirect uri will fail to render, it's just a placeholder to get the auth code.
+      const redirectURI = "http://localhost:3000/loggin_success";
+      const codeVerifier = randomString(43);
+      const popup = window.open(
+        "https://www.facebook.com/v18.0/dialog/oauth?"+
+        "scope=openid" +
+        "&response_type=code" +
+        "&client_id={{facebookClientId}}" +
+        `&redirect_uri=${redirectURI}` +
+        `&code_challenge=${codeVerifier}` +
+        "&code_challenge_method=plain",
+        "Facebook sign in", "popup");
+
+      const handle = setInterval(async () => {
+        // This will fail with a cross-origin error while the popup is still in facebook
+        try {
+          const location = popup.location;
+          if (location.pathname !== "/loggin_success") {
+            return;
+          }
+
+          clearInterval(handle);
+          popup.close();
+          const params = new URLSearchParams(location.search);
+          let oidcToken = await fetchOidcToken(codeVerifier, params.get('code'));
+          handleOidcToken(oidcToken)
+        } catch { }
+      }, 500);
+
+      async function fetchOidcToken(codeVerifier, authCode) {
+          const url = "https://graph.facebook.com/v11.0/oauth/access_token?" +
+            "client_id={{facebookClientId}}" +
+            `&redirect_uri=${redirectURI}` +
+            `&code_verifier=${codeVerifier}` +
+            `&code=${authCode}`;
+          const response = await fetch(url);
+          const data = await response.json();
+          return data.id_token;
+      }
+    }
+  </script>
+
+  {{!-- Common --}}
+  <script>
+    const orgId = "{{orgId}}";
+
+    const env = undefined; // defaults to gamma
+    {{!-- Change to something like
+    { "SignerApiRoot": "https://d1okqxr0ppwfy8.cloudfront.net/" };
+    for a sandbox environment --}}
+
+    /** Handle oidc token */
+    async function handleOidcToken(oidcToken) {
+      // Facebook sends the token as Base64URL, so we map it to Base64
+      const encodedPayload = oidcToken.split(".")[1]
+          .replace(/-/g, '+')
+          .replace(/_/g, '/');
+      const payload = JSON.parse(atob(encodedPayload));
+      console.log("Get identity proof");
+      const identity = await getOidcProof(oidcToken);
+      console.log('Create user');
+      const response = await fetch('/createUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(identity)
+      });
+      if (response.status !== 200) {
+        console.log('Error creating user');
+        return;
+      }
+      // hide sign-in buttons
+      document.getElementsByClassName('signingButtons')[0].style.display = 'none';
+
+      // show submit-transaction form
+      const txForm = document.getElementById('txForm');
+      txForm.style.display = 'block';
+      txForm.addEventListener('submit', async (event) => {
+          event.preventDefault(); // Prevent the default form submission behavior.
+          await signTransaction(oidcToken,
+            document.getElementById("to").value,
+            document.getElementById("value").value);
+      });
+    }
+
+    /** Get proof of authentication from CubeSigner using a given oidc token */
+    async function getOidcProof(oidcToken) {
+      const cubesigner = new cs.CubeSigner({ env });
+      return await cubesigner.oidcProve(oidcToken, orgId);
+    }
+
+    /** Sign a transaction using the given oidc token */
+    async function signTransaction(oidcToken, to, value) {
+      const signReq = {
+        chain_id: 1,
+        tx: {
+          type: "0x00",
+          gas: "0x61a80",
+          gasPrice: "0x77359400",
+          nonce: "0",
+          to,
+          value
+        },
+      };
+      // Create oidc-based signer session
+      const cubesigner = new cs.CubeSigner({ env });
+      console.log("Logging in with oidc")
+      const oidcSession = new cs.SignerSession(await cubesigner.oidcAuth(oidcToken, orgId, ["sign:*"]));
+      // Just grab the first key for the user
+      const key = (await oidcSession.keys())[0];
+      // Sign the transaction
+      console.log("Signing tx", key.material_id, signReq);
+      const sig = (await oidcSession.signEvm(key.material_id, signReq)).data();
+      alert(`Signed transaction: ${sig.rlp_signed_tx}`);
+    }
+  </script>
+
+
+  <body>
+    <div class="signingButtons">
+      <div class="google">
+        <div id="g_id_onload"
+            data-client_id="{{googleClientId}}"
+            data-context="signin"
+            data-ux_mode="popup"
+            data-callback="onGoogleLogin"
+            data-auto_select="true"
+            data-itp_support="true">
+        </div>
+        <div class="g_id_signin"
+            data-type="standard"
+            data-shape="rectangular"
+            data-theme="outline"
+            data-text="signin_with"
+            data-size="large"
+            data-logo_alignment="left">
+        </div>
+      </div>
+
+      <div class="facebook">
+        <button onclick="doFBSignIn()" >
+          Sign in with Facebook
+        </button>
+      </div>
+    </div>
+
+    <form id="txForm" style="display: none;">
+      <label for="value">Value (in gwei):</label>
+      <input type="text" id="value" name="value" value="0x001">
+
+      <label for="to">To:</label>
+      <input type="text" id="to" name="to" value="0x66e2b61f60c1c473ee2bcf850185648ac3762410">
+
+      <input type="submit" value="Sign transaction">
+    </form>
+    {{{body}}}
+  </body>
+</html>
