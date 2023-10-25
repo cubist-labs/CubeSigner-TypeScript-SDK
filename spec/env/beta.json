@@ -1,0 +1,9 @@
+{
+  "Dev-CubeSignerStack": {
+    "ClientId": "405mhvv13llufju1ruvnq42rdc",
+    "LongLivedClientId": "6he1bnm17s0dv8bb4hjim6fs6i",
+    "Region": "us-east-1",
+    "UserPoolId": "us-east-1_79ljlRRfX",
+    "SignerApiRoot": "https://beta.signer.cubist.dev"
+  }
+}
