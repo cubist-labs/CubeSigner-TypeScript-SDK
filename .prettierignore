@@ -1,0 +1,9 @@
+**/dist/
+**/node_modules/
+**/.eslintrc.js
+**/jest.config.js
+**/snap.config.js
+spec/openapi.json
+src/schema.ts
+**/package-lock.json
+examples/**/*.handlebars
