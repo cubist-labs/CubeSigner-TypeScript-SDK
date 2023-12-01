@@ -1,0 +1,9 @@
+{
+  "Dev-CubeSignerStack": {
+    "ClientId": "1tiou9ecj058khiidmhj4ds4rj",
+    "LongLivedClientId": "4jiuai7mtl5164of3drmvej234",
+    "Region": "us-east-1",
+    "UserPoolId": "us-east-1_RU7HEslOW",
+    "SignerApiRoot": "https://gamma.signer.cubist.dev"
+  }
+}
