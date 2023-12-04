@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "ethers": "6.7.1",
-    "openapi-fetch": "0.6.1"
+    "openapi-fetch": "0.8.2"
   },
   "devDependencies": {
     "@hpke/core": "^1.2.5",
