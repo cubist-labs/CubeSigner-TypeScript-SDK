@@ -28,7 +28,7 @@
     "gen-schema": "npx openapi-typescript ./spec/openapi.json --output ./src/schema.ts"
   },
   "dependencies": {
-    "ethers": "6.7.1",
+    "ethers": "6.9.2",
     "openapi-fetch": "0.6.1"
   },
   "devDependencies": {
