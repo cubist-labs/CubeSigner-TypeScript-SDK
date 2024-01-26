@@ -1,0 +1,10 @@
+**/dist/
+**/node_modules/
+**/.eslintrc.js
+**/jest.config.js
+**/snap.config.js
+**/spec/openapi.json
+**/package-lock.json
+README.md
+examples/**
+scripts/**

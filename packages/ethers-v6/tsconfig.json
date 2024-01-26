@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "node16",
+    "outDir": "./dist",
+  },
+  "typedocOptions": {
+    "out": "./docs",
+    "entryPoints": ["src/index.ts"],
+  },
+  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*.ts"],
+}
