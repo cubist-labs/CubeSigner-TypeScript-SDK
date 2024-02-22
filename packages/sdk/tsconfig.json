@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "ES2022",
+    "outDir": "./dist"
+  },
+  "typedocOptions": {
+    "out": "./docs",
+    "entryPoints": ["src/index.ts", "src/env.ts", "src/schema.ts"]
+  },
+  "exclude": ["spec", "node_modules", "dist"],
+  "include": ["src/**/*.ts"]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "cubesigner-thirdweb-erc721-example",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "dist/index.js",
+  "module": true,
+  "scripts": {
+    "prebuild": "npm ci",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "ts-node-esm ./dist/index.js",
+    "start-hardhat": "if [ \"$NETWORK\" = \"localhost\" ]; then npx hardhat node --hostname localhost --network hardhat; fi"
+  },
+  "dependencies": {
+    "@cubist-labs/cubesigner-sdk": "../../packages/sdk",
+    "@cubist-labs/cubesigner-sdk-ethers-v5": "../../packages/ethers-v5",
+    "@cubist-labs/cubesigner-sdk-fs-storage": "../../packages/fs-storage",
+    "@thirdweb-dev/sdk": "^4.0.25",
+    "hardhat": "^2.19.1",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.7",
+    "typescript": "^4.8"
+  }
+}
