@@ -1,0 +1,293 @@
+<style>
+  .signingButtons {
+    width: 215px;
+  }
+
+  .facebook button {
+    background-color: #0766FF;
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    border: none;
+    width: 215px;
+    margin-top: 10px;
+  }
+</style>
+
+{{!-- CubeSigner SDK --}}
+<script src="/cs/index.js"></script>
+
+{{!-- Google --}}
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+  function onGoogleLogin(res) {
+    const oidcToken = res.credential;
+    handleOidcToken(oidcToken);
+  }
+</script>
+
+{{!-- Twitter + Facebook --}}
+<script>
+  const orgId = "{{orgId}}";
+
+  const FACEBOOK_AUTHORIZE_ENDPOINT = "https://www.facebook.com/v18.0/dialog/oauth";
+  const FACEBOOK_TOKEN_ENDPOINT = "https://graph.facebook.com/v11.0/oauth/access_token";
+  const TWITTER_AUTHORIZE_ENDPOINT = "https://twitter.com/i/oauth2/authorize";
+  const TWITTER_SHIM_TOKEN_ENDPOINT = `{{apiRoot}}/v0/org/${encodeURIComponent(orgId)}/oauth2/twitter`;
+
+  const TWITTER_CLIENT_ID = "{{twitterClientId}}";
+  const FACEBOOK_CLIENT_ID = "{{facebookClientId}}";
+
+  /** The redirect URI we use for both facebook and twitter login */
+  const redirect_uri = new URL("/oauthCallback", window.location);
+
+  /**
+   * Generates a random string. Used for code_challenges and state parameter
+   *
+   * NOTE: in prod use cryptographically strong random generator
+   */
+  function randomString(length) {
+    const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+    let randomString = "";
+    for (let i = 0; i < length; i++) {
+      randomString += characters[Math.floor(Math.random() * characters.length)];
+    }
+    return randomString;
+  };
+
+  /** 
+   * Runs the oauth2PKCELogin flow which includes: 
+   *   1. Generating an authorizeURL with appropriate parameters
+   *   2. Opening authorizeURL in a popup
+   *   3. Waiting for the authentication code to arrive via BroadcastChannel (see oauthCallback.handlebars)
+   *   4. Requesting the token from the provider's token endpoint
+   */
+  async function oauth2PKCELogin(authEndpoint, tokenEndpoint, client_id, scope) {
+    // 1. Generate the authorizeURL
+    const code_challenge = randomString(43);
+    const state = randomString(16);
+    const params = new URLSearchParams({
+      response_type: "code",
+      client_id,
+      scope,
+      state,
+      code_challenge,
+      code_challenge_method: "plain",
+      redirect_uri
+    });
+
+    const authorizeURL = `${authEndpoint}?${params}`;
+
+    // 2. Open the authorizeURL in a popup
+    window.open(authorizeURL, "Login", "popup,width=400,height=600,menubar=no");
+
+    // 3. Wait for the code to be returned via BroadcastChannel
+    let code = await new Promise(resolve =>
+      new BroadcastChannel("oauth_code").addEventListener('message', messageEvent => {
+        if (messageEvent.data.state === state) {
+          resolve(messageEvent.data.code)
+        }
+      }, { once: true }));
+
+
+    // 4. Request the token from the provider
+    const response = await fetch(tokenEndpoint, {
+      method: "POST",
+      body: new URLSearchParams({
+        code,
+        grant_type: 'authorization_code',
+        client_id,
+        redirect_uri,
+        code_verifier: code_challenge,
+      })
+    });
+    const data = await response.json();
+    if (response.status !== 200) {
+      console.error(data);
+      throw new Error("Non success response");
+    }
+
+    if (!data.id_token) {
+      throw new Error("Token data does not include 'id_token'");
+    }
+
+    return data;
+  }
+
+  async function doTwitterSignIn() {
+    // Note that we use CubeSigner's OIDC shim for twitter as the token endpoint
+    let authResponse = await oauth2PKCELogin(TWITTER_AUTHORIZE_ENDPOINT, TWITTER_SHIM_TOKEN_ENDPOINT, TWITTER_CLIENT_ID, "tweet.read users.read follows.read follows.write");
+    handleOidcToken(authResponse.id_token);
+  }
+
+  async function doFBSignIn() {
+    let authResponse = await oauth2PKCELogin(FACEBOOK_AUTHORIZE_ENDPOINT, FACEBOOK_TOKEN_ENDPOINT, FACEBOOK_CLIENT_ID, "openid,email");
+    handleOidcToken(authResponse.id_token);
+  }
+</script>
+
+{{!-- Common --}}
+<script>
+  const env = { "SignerApiRoot": "{{apiRoot}}" };
+
+  /** Handle oidc token */
+  async function handleOidcToken(oidcToken) {
+    console.log("Get identity proof");
+    const identity = await getOidcProof(oidcToken);
+    console.log("Identity", identity);
+
+    // create a new OIDC user if there is no user associated with this OIDC identity
+    if (!identity.user_info) {
+      console.log('Create user');
+      const response = await fetch('/createUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(identity)
+      });
+      if (response.status !== 200) {
+        console.log('Error creating user');
+        return;
+      }
+    }
+
+    // register FIDO if MFA not configured yet
+    if ((identity.user_info?.configured_mfa ?? []).length === 0) {
+      console.log("No MFA set up; adding FIDO now");
+      await setUpFido(oidcToken);
+    } else {
+      console.log("MFA already configured, proceeding");
+    }
+
+    // hide sign-in buttons
+    document.getElementsByClassName('signingButtons')[0].style.display = 'none';
+
+    // show submit-transaction form
+    const txForm = document.getElementById('txForm');
+    txForm.style.display = 'block';
+    txForm.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent the default form submission behavior.
+      await signTransaction(oidcToken,
+        document.getElementById("to").value,
+        document.getElementById("value").value);
+    });
+  }
+
+  /** Get proof of authentication from CubeSigner using a given oidc token */
+  async function getOidcProof(oidcToken) {
+    return await cs.CubeSignerClient.proveOidcIdentity(env, orgId, oidcToken);
+  }
+
+  /** Sign a transaction using the given oidc token */
+  async function signTransaction(oidcToken, to, value) {
+    const signReq = {
+      chain_id: 1,
+      tx: {
+        type: "0x00",
+        gas: "0x61a80",
+        gasPrice: "0x77359400",
+        nonce: "0",
+        to,
+        value
+      },
+    };
+    // Create oidc-based signer session
+    const oidcClient = await oidcLogin(oidcToken, ["sign:*"]);
+    // Just grab the first key for the user
+    const key = (await oidcClient.sessionKeys())[0];
+    // Sign the transaction
+    console.log("Signing tx", key.materialId, signReq);
+    const sig = (await key.signEvm(signReq)).data();
+    alert(`Signed transaction: ${sig.rlp_signed_tx}`);
+  }
+
+  /** Log in using OIDC token. If MFA is required, approve with FIDO. The result is a CubeSignerClient object. */
+  async function oidcLogin(oidcToken, scopes) {
+    console.log("Logging in with OIDC")
+    let resp = await cs.CubeSignerClient.createOidcSession(env, orgId, oidcToken, scopes);
+    if (resp.requiresMfa()) {
+      const mfaClient = await resp.mfaClient();
+      const mfaId = resp.mfaId();
+      const challenge = await mfaClient.org().getMfaRequest(mfaId).fidoVote();
+      console.log("MFA FIDO challenge", challenge);
+
+      // === only needed when testing locally ===
+      delete challenge.options.rpId;
+      // ====================================-===
+
+      // prompt the user to tap their FIDO and send the answer back to CubeSigner
+      const mfaInfo = await challenge.createCredentialAndAnswer();
+
+      // print out the current status of the MFA request and assert that it has been approved
+      console.log("MFA info", mfaInfo);
+      const receipt = await mfaInfo.receipt();
+      if (!receipt) {
+        throw new Error("MFA not approved yet");
+      }
+
+      // proceed with the MFA approval
+      resp = await resp.execWithMfaApproval(receipt);
+    }
+    if (resp.requiresMfa()) {
+      throw new Error("MFA should not be required after approval");
+    }
+    return await cs.CubeSignerClient.create(resp.data());
+  }
+
+  async function setUpFido(oidcToken) {
+    // if logging in requires MFA, we can just take the returned MFA session since that's all we need for now
+    const loginResp = await cs.CubeSignerClient.createOidcSession(env, orgId, oidcToken, ["manage:mfa"]);
+    const oidcClient = loginResp.requiresMfa()
+      ? await loginResp.mfaClient()
+      : await cs.CubeSignerClient.create(loginResp.data());
+
+    const addFidoResp = await oidcClient.addFido("My Fido Key");
+    const challenge = addFidoResp.data();
+
+    // === only needed when testing locally ===
+    delete challenge.options.rp.id;
+    // ====================================-===
+
+    await challenge.createCredentialAndAnswer();
+    console.log("FIDO added!");
+  }
+</script>
+<div class="signingButtons">
+  <div class="google">
+    <div id="g_id_onload" data-client_id="{{googleClientId}}" data-context="signin" data-ux_mode="popup"
+      data-callback="onGoogleLogin" data-auto_select="true" data-itp_support="true">
+    </div>
+    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with"
+      data-size="large" data-logo_alignment="left">
+    </div>
+  </div>
+
+  <div class="twitter">
+    <button onClick="doTwitterSignIn()" style="border: none; background: none; margin: 5px">
+      <img
+        src="https://cdn.cms-twdigitalassets.com/content/dam/developer-twitter/auth-docs/sign-in-with-twitter-gray.png.twimg.1920.png"
+        alt="buttonpng" border="0" />
+    </button>
+  </div>
+
+  <div class="facebook">
+    <button onclick="doFBSignIn()">
+      Sign in with Facebook
+    </button>
+  </div>
+</div>
+
+<form id="txForm" style="display: none;">
+  <label for="value">Value (in gwei):</label>
+  <input type="text" id="value" name="value" value="0x001">
+
+  <label for="to">To:</label>
+  <input type="text" id="to" name="to" value="0x66e2b61f60c1c473ee2bcf850185648ac3762410">
+
+  <input type="submit" value="Sign transaction">
+</form>
+
+<p>
+  Simple OIDC-based login + hardware-backed signing in the browser.
+</p>
