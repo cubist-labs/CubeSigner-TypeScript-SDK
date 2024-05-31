@@ -1,0 +1,20 @@
+{
+  "env": {
+    "node": true,
+    "commonjs": true,
+    "jest": true,
+    "es2019": true
+  },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "google", "prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": "./tsconfig.json" },
+  "plugins": ["@typescript-eslint"],
+  "root": true,
+  "rules": {
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "camelcase": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-floating-promises": ["error"]
+  }
+}
