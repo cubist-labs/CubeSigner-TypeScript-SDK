@@ -11,7 +11,7 @@ import { Signer } from "@cubist-labs/cubesigner-sdk-ethers-v5";
 import { ethers } from "ethers";
 
 ...
-// Create new Signer given a key/account address and CubeSigner session object
+// Create a new Signer given a key/account address and CubeSigner session object
 // (with permissions to sign with this key):
 const signer = new Signer(keyAddress, cubeSignerSession);
 
