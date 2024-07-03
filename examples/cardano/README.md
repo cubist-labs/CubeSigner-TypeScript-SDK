@@ -1,6 +1,6 @@
 # Cardano example
 
-This example shows how to creaet a cardano wallet.
+This example shows how to create a cardano wallet.
 
 ## Logging into CubeSigner
 
