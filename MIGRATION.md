@@ -56,7 +56,7 @@ _caching_, _cloning_, and/or _serialization_.
 - `SessionStorage` interface removed
 
   - what used to be split between `SessionStorage` and `SignerSessionManager` is now unified
-    behind a single `SessionManager` interface; the following concrete implementation are provided:
+    behind a single `SessionManager` interface; the following concrete implementations are provided:
     - `MemorySessionManager`
     - `JsonFileSessionManager` (by the `@cubist-labs/cubesigner-sdk-fs-storage` package)
     - `BrowserStorageManager` (by the `@cubist-labs/cubesigner-sdk-browser-storage` package)
