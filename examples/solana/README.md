@@ -32,7 +32,7 @@ this on the Solana testnet or mainnet.
 ## Raw Ed25519 signing
 
 Though we strongly suggest using the well-typed Solana end point (which expects
-a base64-encoded serialized message), this example also shows how to to use raw
+a base64-encoded serialized message), this example also shows how to use raw
 Ed25519 signing to sign messages. To exercise this path, you need to make sure
 the source key has `AllowRawBlobSigning` enabled:
 
