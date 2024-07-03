@@ -9,7 +9,7 @@ documentation](https://support.avax.network/en/articles/6719662-transferring-fro
 ## Running the Example
 
 To run the example, you need to create a `secp` and an
-`secp-ava`/`secp-ava-test` key and add it to a role like we did in the
+`secp-ava`/`secp-ava-test` key and add it to a role as we did in the
 [top-level README](../../README.md). After you do this, generate a session
 token for the role; you can either save the token (`cs token create ...
 --save`) or export as base64:
