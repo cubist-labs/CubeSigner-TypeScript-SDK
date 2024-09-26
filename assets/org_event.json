@@ -1,0 +1,11 @@
+{
+  "Type" : "Notification",
+  "MessageId" : "859e040b-9eb3-5fba-89b2-5a4cc6216091",
+  "TopicArn" : "arn:aws:sns:us-east-1:819335423237:Beta-CubeSignerStack-OrgEventsTopic4416298A-beobtbku2Wa8",
+  "Message" : "{\"org\":\"Org#06aadcc8-1669-4cb5-a129-a293de388b70\",\"utc_timestamp\":1707955789877,\"event\":\"cubist::org_event\",\"org_event\":\"OidcAuth\",\"user_info\":{\"email\":\"n+deian+beta@cubist.dev\",\"aud\":\"405mhvv13llufju1ruvnq42rdc\",\"iss\":\"https://cognito-idp.us-east-1.amazonaws.com/us-east-1_79ljlRRfX\",\"sub\":\"8d4ba3d1-eb35-4653-94eb-3352b42a6ead\"},\"membership\":\"Owner\",\"purpose\":\"OIDC-auth session with scopes [ManageAll]\",\"scopes\":[\"manage:*\"]}",
+  "Timestamp" : "2024-02-15T00:09:54.266Z",
+  "SignatureVersion" : "2",
+  "Signature" : "NGNaq7cStRZAk9tCwT7H8oEYJCm5jCKzRhVqoTrx5GE4j9xdIx7mI4elgAGR9s8V26xm8F9pCVIbz3360ZvzjB5lAUeudrOTCHt/jk5pqEJ83mdQQgyLTGNIdckATk10H7oNNDQz2ncopWMV+Xk8gti0Owg6BBX8eyeT08EQSfF4ibf+4o7/nlVK3cDS4Kw6mmkUwt9qtsOOblaHPlaeaJICvHds92bJ7nwsJamEwv18/VxKXvQGBkRvMC/viqxcruNZj3yK+AM1ExV3w4xxF5rx80y54uLdrdFv/9CYy9nt5lhB/dlEzA06s3ElfVChFEy6ys3V49M2qJ8prVh5TQ==",
+  "SigningCertURL" : "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-60eadc530605d63b8e62a523676ef735.pem",
+  "UnsubscribeURL" : "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:819335423237:Beta-CubeSignerStack-OrgEventsTopic4416298A-beobtbku2Wa8:34509ebe-9b05-4dc2-9de1-658ac46b7d29"
+}
