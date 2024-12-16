@@ -1,0 +1,12 @@
+{
+  "Message": "You have chosen to subscribe to the topic arn:aws:sns:us-east-1:819335423237:Beta-CubeSignerStack-OrgEventsTopic4416298A-beobtbku2Wa8.\nTo confirm the subscription, visit the SubscribeURL included in this message.",
+  "MessageId": "bc96e8bc-a228-49f7-b837-c262af36a617",
+  "Signature": "oB7lY69BhlFLqlp+s2UA2+DirSXYPXKsbwQc/+m69CFLxishc/qqO50eecAOeYOvwpuow5PRCQs2MADlUKQdsQKKZZvXoSPB7ZSp0OrWkWTKX66oHz9yrl/Oa4SLe4tqcCNLkGRU2YL0PxbDrmrET8AjzlLInSttT9Y2bkwO5ZEznk0SgeqUlLzhMGSwDhFl3bXmzlMtFqBsFC6JaefE5lDpaRDykbTo9cYYWfVr1YONtpAVDbU7xQgsDvq0btDRRMabCd+cLu2mWWUVqhWIh2tL5f67A5LyoAjp2QrIsdckbdJWwvQmqbo7dlVhwALZB4f0OLwikk6o5R73HxagmQ==",
+  "SignatureVersion": "2",
+  "SigningCertURL": "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-9c6465fa7f48f5cacd23014631ec1136.pem",
+  "SubscribeURL": "https://sns.us-east-1.amazonaws.com/?Action=ConfirmSubscription&TopicArn=arn:aws:sns:us-east-1:819335423237:Beta-CubeSignerStack-OrgEventsTopic4416298A-beobtbku2Wa8&Token=2336412f37fb687f5d51e6e2425ba1f30b1727d2d06a312f7528feafefe580ea9a151959151621ae3fdeba6e5a54bfa2047944f881ff2517278530087b27aa5ec2e0a1d54a9ca05fde406c7bd29989685aae84210dcc35c0e2e901750ebf9d1f6bdc3dea30833ff34ff3e16eb7d99b8228a3307f53cbdf632ac2622c8df0e9d3a0d857a0e9089e5e21981abb5fd01213db6f89003228d1dd4d286877eba906af",
+  "Timestamp": "2024-11-26T10:25:03.390Z",
+  "Token": "2336412f37fb687f5d51e6e2425ba1f30b1727d2d06a312f7528feafefe580ea9a151959151621ae3fdeba6e5a54bfa2047944f881ff2517278530087b27aa5ec2e0a1d54a9ca05fde406c7bd29989685aae84210dcc35c0e2e901750ebf9d1f6bdc3dea30833ff34ff3e16eb7d99b8228a3307f53cbdf632ac2622c8df0e9d3a0d857a0e9089e5e21981abb5fd01213db6f89003228d1dd4d286877eba906af",
+  "TopicArn": "arn:aws:sns:us-east-1:819335423237:Beta-CubeSignerStack-OrgEventsTopic4416298A-beobtbku2Wa8",
+  "Type": "SubscriptionConfirmation"
+}

@@ -1,0 +1,39 @@
+{
+  "name": "@cubist-labs/cubesigner-sdk-key-import",
+  "version": "0.4.102-0",
+  "description": "Client-side key-import machinery for CubeSigner",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "tsconfig.json",
+    "src/**",
+    "dist/**",
+    "../../NOTICE",
+    "../../LICENSE-APACHE",
+    "../../LICENSE_MIT"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "tsc",
+    "repl": "npx node --import tsx",
+    "test": "npx --node-options='--experimental-vm-modules' jest --maxWorkers=1"
+  },
+  "peerDependencies": {
+    "@cubist-labs/cubesigner-sdk": "^0.4.102-0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  },
+  "dependencies": {
+    "@auth0/cose": "^1.0.2",
+    "@hpke/core": "^1.3.1",
+    "@peculiar/asn1-ecc": "^2.3.13",
+    "@peculiar/asn1-schema": "^2.3.13",
+    "@peculiar/x509": "^1.12.1",
+    "@scure/bip39": "^1.4.0",
+    "cbor-x": "^1.6.0",
+    "msgpackr": "^1.11.0"
+  }
+}
