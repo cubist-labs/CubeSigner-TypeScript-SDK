@@ -1,0 +1,88 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.pathJoin = pathJoin;
+exports.decodeBase64 = decodeBase64;
+exports.decodeBase64Url = decodeBase64Url;
+exports.encodeToBase64 = encodeToBase64;
+exports.encodeToBase64Url = encodeToBase64Url;
+exports.delay = delay;
+exports.encodeToHex = encodeToHex;
+/**
+ * Path join
+ *
+ * @param dir Parent directory
+ * @param file Pathname
+ * @returns New pathname
+ */
+function pathJoin(dir, file) {
+    const sep = globalThis?.process?.platform === "win32" ? "\\" : "/";
+    return `${dir}${sep}${file}`;
+}
+/**
+ * Browser-friendly helper for decoding a 'base64'-encoded string into a byte array.
+ *
+ * @param b64 The 'base64'-encoded string to decode
+ * @returns Decoded byte array
+ */
+function decodeBase64(b64) {
+    return typeof Buffer === "function"
+        ? Buffer.from(b64, "base64")
+        : Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+}
+/**
+ * Browser-friendly helper for decoding a 'base64url'-encoded string into a byte array.
+ *
+ * @param b64url The 'base64url'-encoded string to decode
+ * @returns Decoded byte array
+ */
+function decodeBase64Url(b64url) {
+    // NOTE: there is no "base64url" encoding in the "buffer" module for the browser (unlike in node.js)
+    const b64 = b64url.replace(/-/g, "+").replace(/_/g, "/").replace(/=*$/g, "");
+    return decodeBase64(b64);
+}
+/**
+ *
+ * Browser-friendly helper for encoding a byte array into a padded `base64`-encoded string.
+ *
+ * @param buffer The byte array to encode
+ * @returns The 'base64' encoding of the byte array.
+ */
+function encodeToBase64(buffer) {
+    const bytes = new Uint8Array(buffer);
+    const b64 = typeof Buffer === "function"
+        ? Buffer.from(bytes).toString("base64")
+        : btoa(bytes.reduce((s, b) => s + String.fromCharCode(b), ""));
+    return b64;
+}
+/**
+ * Browser-friendly helper for encoding a byte array into a 'base64url`-encoded string.
+ *
+ * @param buffer The byte array to encode
+ * @returns The 'base64url' encoding of the byte array.
+ */
+function encodeToBase64Url(buffer) {
+    const b64 = encodeToBase64(buffer);
+    // NOTE: there is no "base64url" encoding in the "buffer" module for the browser (unlike in node.js)
+    return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=*$/g, "");
+}
+/**
+ * Sleeps for `ms` milliseconds.
+ *
+ * @param ms Milliseconds to sleep
+ * @returns A promise that is resolved after `ms` milliseconds.
+ */
+function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+/**
+ * Converts a string or a uint8 array into a hex string. Strings are encoded in UTF-8 before
+ * being converted to hex.
+ *
+ * @param message The input
+ * @returns Hex string prefixed with "0x"
+ */
+function encodeToHex(message) {
+    const buff = typeof message === "string" ? Buffer.from(message, "utf8") : Buffer.from(message);
+    return "0x" + buff.toString("hex");
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXRpbC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy91dGlsLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBd0JBLDRCQUdDO0FBUUQsb0NBSUM7QUFRRCwwQ0FJQztBQVNELHdDQU9DO0FBUUQsOENBSUM7QUFRRCxzQkFFQztBQVNELGtDQUdDO0FBcEZEOzs7Ozs7R0FNRztBQUNILFNBQWdCLFFBQVEsQ0FBQyxHQUFXLEVBQUUsSUFBWTtJQUNoRCxNQUFNLEdBQUcsR0FBRyxVQUFVLEVBQUUsT0FBTyxFQUFFLFFBQVEsS0FBSyxPQUFPLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQyxDQUFDLENBQUMsR0FBRyxDQUFDO0lBQ25FLE9BQU8sR0FBRyxHQUFHLEdBQUcsR0FBRyxHQUFHLElBQUksRUFBRSxDQUFDO0FBQy9CLENBQUM7QUFFRDs7Ozs7R0FLRztBQUNILFNBQWdCLFlBQVksQ0FBQyxHQUFXO0lBQ3RDLE9BQU8sT0FBTyxNQUFNLEtBQUssVUFBVTtRQUNqQyxDQUFDLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxHQUFHLEVBQUUsUUFBUSxDQUFDO1FBQzVCLENBQUMsQ0FBQyxVQUFVLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLENBQUMsRUFBRSxFQUFFLENBQUMsQ0FBQyxDQUFDLFVBQVUsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDO0FBQ3pELENBQUM7QUFFRDs7Ozs7R0FLRztBQUNILFNBQWdCLGVBQWUsQ0FBQyxNQUFjO0lBQzVDLG9HQUFvRztJQUNwRyxNQUFNLEdBQUcsR0FBRyxNQUFNLENBQUMsT0FBTyxDQUFDLElBQUksRUFBRSxHQUFHLENBQUMsQ0FBQyxPQUFPLENBQUMsSUFBSSxFQUFFLEdBQUcsQ0FBQyxDQUFDLE9BQU8sQ0FBQyxNQUFNLEVBQUUsRUFBRSxDQUFDLENBQUM7SUFDN0UsT0FBTyxZQUFZLENBQUMsR0FBRyxDQUFDLENBQUM7QUFDM0IsQ0FBQztBQUVEOzs7Ozs7R0FNRztBQUNILFNBQWdCLGNBQWMsQ0FBQyxNQUF3QjtJQUNyRCxNQUFNLEtBQUssR0FBRyxJQUFJLFVBQVUsQ0FBQyxNQUFNLENBQUMsQ0FBQztJQUNyQyxNQUFNLEdBQUcsR0FDUCxPQUFPLE1BQU0sS0FBSyxVQUFVO1FBQzFCLENBQUMsQ0FBQyxNQUFNLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDLFFBQVEsQ0FBQyxRQUFRLENBQUM7UUFDdkMsQ0FBQyxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQyxFQUFFLENBQUMsRUFBRSxFQUFFLENBQUMsQ0FBQyxHQUFHLE1BQU0sQ0FBQyxZQUFZLENBQUMsQ0FBQyxDQUFDLEVBQUUsRUFBRSxDQUFDLENBQUMsQ0FBQztJQUNuRSxPQUFPLEdBQUcsQ0FBQztBQUNiLENBQUM7QUFFRDs7Ozs7R0FLRztBQUNILFNBQWdCLGlCQUFpQixDQUFDLE1BQXdCO0lBQ3hELE1BQU0sR0FBRyxHQUFHLGNBQWMsQ0FBQyxNQUFNLENBQUMsQ0FBQztJQUNuQyxvR0FBb0c7SUFDcEcsT0FBTyxHQUFHLENBQUMsT0FBTyxDQUFDLEtBQUssRUFBRSxHQUFHLENBQUMsQ0FBQyxPQUFPLENBQUMsS0FBSyxFQUFFLEdBQUcsQ0FBQyxDQUFDLE9BQU8sQ0FBQyxNQUFNLEVBQUUsRUFBRSxDQUFDLENBQUM7QUFDekUsQ0FBQztBQUVEOzs7OztHQUtHO0FBQ0gsU0FBZ0IsS0FBSyxDQUFDLEVBQVU7SUFDOUIsT0FBTyxJQUFJLE9BQU8sQ0FBQyxDQUFDLE9BQU8sRUFBRSxFQUFFLENBQUMsVUFBVSxDQUFDLE9BQU8sRUFBRSxFQUFFLENBQUMsQ0FBQyxDQUFDO0FBQzNELENBQUM7QUFFRDs7Ozs7O0dBTUc7QUFDSCxTQUFnQixXQUFXLENBQUMsT0FBNEI7SUFDdEQsTUFBTSxJQUFJLEdBQUcsT0FBTyxPQUFPLEtBQUssUUFBUSxDQUFDLENBQUMsQ0FBQyxNQUFNLENBQUMsSUFBSSxDQUFDLE9BQU8sRUFBRSxNQUFNLENBQUMsQ0FBQyxDQUFDLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxPQUFPLENBQUMsQ0FBQztJQUMvRixPQUFPLElBQUksR0FBRyxJQUFJLENBQUMsUUFBUSxDQUFDLEtBQUssQ0FBQyxDQUFDO0FBQ3JDLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKiogSlNPTiBtYXAgdHlwZSAqL1xuZXhwb3J0IGludGVyZmFjZSBKc29uTWFwIHtcbiAgW21lbWJlcjogc3RyaW5nXTogc3RyaW5nIHwgbnVtYmVyIHwgYm9vbGVhbiB8IG51bGwgfCBKc29uQXJyYXkgfCBKc29uTWFwO1xufVxuXG4vKiogSlNPTiBhcnJheSB0eXBlICovXG5leHBvcnQgdHlwZSBKc29uQXJyYXkgPSBBcnJheTxzdHJpbmcgfCBudW1iZXIgfCBib29sZWFuIHwgbnVsbCB8IEpzb25BcnJheSB8IEpzb25NYXA+O1xuXG4vKiogQW55IEpTT04gdmFsdWUgKi9cbmV4cG9ydCB0eXBlIEpzb25WYWx1ZSA9IHN0cmluZyB8IG51bWJlciB8IGJvb2xlYW4gfCBudWxsIHwgSnNvbkFycmF5IHwgSnNvbk1hcDtcblxuLyoqIFRoZSBhZGRyZXNzIG9mIGEgY29udHJhY3QuICovXG5leHBvcnQgdHlwZSBDb250cmFjdEFkZHJlc3MgPSB7XG4gIGNoYWluX2lkOiBzdHJpbmc7XG4gIGFkZHJlc3M6IHN0cmluZztcbn07XG5cbi8qKlxuICogUGF0aCBqb2luXG4gKlxuICogQHBhcmFtIGRpciBQYXJlbnQgZGlyZWN0b3J5XG4gKiBAcGFyYW0gZmlsZSBQYXRobmFtZVxuICogQHJldHVybnMgTmV3IHBhdGhuYW1lXG4gKi9cbmV4cG9ydCBmdW5jdGlvbiBwYXRoSm9pbihkaXI6IHN0cmluZywgZmlsZTogc3RyaW5nKTogc3RyaW5nIHtcbiAgY29uc3Qgc2VwID0gZ2xvYmFsVGhpcz8ucHJvY2Vzcz8ucGxhdGZvcm0gPT09IFwid2luMzJcIiA/IFwiXFxcXFwiIDogXCIvXCI7XG4gIHJldHVybiBgJHtkaXJ9JHtzZXB9JHtmaWxlfWA7XG59XG5cbi8qKlxuICogQnJvd3Nlci1mcmllbmRseSBoZWxwZXIgZm9yIGRlY29kaW5nIGEgJ2Jhc2U2NCctZW5jb2RlZCBzdHJpbmcgaW50byBhIGJ5dGUgYXJyYXkuXG4gKlxuICogQHBhcmFtIGI2NCBUaGUgJ2Jhc2U2NCctZW5jb2RlZCBzdHJpbmcgdG8gZGVjb2RlXG4gKiBAcmV0dXJucyBEZWNvZGVkIGJ5dGUgYXJyYXlcbiAqL1xuZXhwb3J0IGZ1bmN0aW9uIGRlY29kZUJhc2U2NChiNjQ6IHN0cmluZyk6IFVpbnQ4QXJyYXkge1xuICByZXR1cm4gdHlwZW9mIEJ1ZmZlciA9PT0gXCJmdW5jdGlvblwiXG4gICAgPyBCdWZmZXIuZnJvbShiNjQsIFwiYmFzZTY0XCIpXG4gICAgOiBVaW50OEFycmF5LmZyb20oYXRvYihiNjQpLCAoYykgPT4gYy5jaGFyQ29kZUF0KDApKTtcbn1cblxuLyoqXG4gKiBCcm93c2VyLWZyaWVuZGx5IGhlbHBlciBmb3IgZGVjb2RpbmcgYSAnYmFzZTY0dXJsJy1lbmNvZGVkIHN0cmluZyBpbnRvIGEgYnl0ZSBhcnJheS5cbiAqXG4gKiBAcGFyYW0gYjY0dXJsIFRoZSAnYmFzZTY0dXJsJy1lbmNvZGVkIHN0cmluZyB0byBkZWNvZGVcbiAqIEByZXR1cm5zIERlY29kZWQgYnl0ZSBhcnJheVxuICovXG5leHBvcnQgZnVuY3Rpb24gZGVjb2RlQmFzZTY0VXJsKGI2NHVybDogc3RyaW5nKTogVWludDhBcnJheSB7XG4gIC8vIE5PVEU6IHRoZXJlIGlzIG5vIFwiYmFzZTY0dXJsXCIgZW5jb2RpbmcgaW4gdGhlIFwiYnVmZmVyXCIgbW9kdWxlIGZvciB0aGUgYnJvd3NlciAodW5saWtlIGluIG5vZGUuanMpXG4gIGNvbnN0IGI2NCA9IGI2NHVybC5yZXBsYWNlKC8tL2csIFwiK1wiKS5yZXBsYWNlKC9fL2csIFwiL1wiKS5yZXBsYWNlKC89KiQvZywgXCJcIik7XG4gIHJldHVybiBkZWNvZGVCYXNlNjQoYjY0KTtcbn1cblxuLyoqXG4gKlxuICogQnJvd3Nlci1mcmllbmRseSBoZWxwZXIgZm9yIGVuY29kaW5nIGEgYnl0ZSBhcnJheSBpbnRvIGEgcGFkZGVkIGBiYXNlNjRgLWVuY29kZWQgc3RyaW5nLlxuICpcbiAqIEBwYXJhbSBidWZmZXIgVGhlIGJ5dGUgYXJyYXkgdG8gZW5jb2RlXG4gKiBAcmV0dXJucyBUaGUgJ2Jhc2U2NCcgZW5jb2Rpbmcgb2YgdGhlIGJ5dGUgYXJyYXkuXG4gKi9cbmV4cG9ydCBmdW5jdGlvbiBlbmNvZGVUb0Jhc2U2NChidWZmZXI6IEl0ZXJhYmxlPG51bWJlcj4pOiBzdHJpbmcge1xuICBjb25zdCBieXRlcyA9IG5ldyBVaW50OEFycmF5KGJ1ZmZlcik7XG4gIGNvbnN0IGI2NCA9XG4gICAgdHlwZW9mIEJ1ZmZlciA9PT0gXCJmdW5jdGlvblwiXG4gICAgICA/IEJ1ZmZlci5mcm9tKGJ5dGVzKS50b1N0cmluZyhcImJhc2U2NFwiKVxuICAgICAgOiBidG9hKGJ5dGVzLnJlZHVjZSgocywgYikgPT4gcyArIFN0cmluZy5mcm9tQ2hhckNvZGUoYiksIFwiXCIpKTtcbiAgcmV0dXJuIGI2NDtcbn1cblxuLyoqXG4gKiBCcm93c2VyLWZyaWVuZGx5IGhlbHBlciBmb3IgZW5jb2RpbmcgYSBieXRlIGFycmF5IGludG8gYSAnYmFzZTY0dXJsYC1lbmNvZGVkIHN0cmluZy5cbiAqXG4gKiBAcGFyYW0gYnVmZmVyIFRoZSBieXRlIGFycmF5IHRvIGVuY29kZVxuICogQHJldHVybnMgVGhlICdiYXNlNjR1cmwnIGVuY29kaW5nIG9mIHRoZSBieXRlIGFycmF5LlxuICovXG5leHBvcnQgZnVuY3Rpb24gZW5jb2RlVG9CYXNlNjRVcmwoYnVmZmVyOiBJdGVyYWJsZTxudW1iZXI+KTogc3RyaW5nIHtcbiAgY29uc3QgYjY0ID0gZW5jb2RlVG9CYXNlNjQoYnVmZmVyKTtcbiAgLy8gTk9URTogdGhlcmUgaXMgbm8gXCJiYXNlNjR1cmxcIiBlbmNvZGluZyBpbiB0aGUgXCJidWZmZXJcIiBtb2R1bGUgZm9yIHRoZSBicm93c2VyICh1bmxpa2UgaW4gbm9kZS5qcylcbiAgcmV0dXJuIGI2NC5yZXBsYWNlKC9cXCsvZywgXCItXCIpLnJlcGxhY2UoL1xcLy9nLCBcIl9cIikucmVwbGFjZSgvPSokL2csIFwiXCIpO1xufVxuXG4vKipcbiAqIFNsZWVwcyBmb3IgYG1zYCBtaWxsaXNlY29uZHMuXG4gKlxuICogQHBhcmFtIG1zIE1pbGxpc2Vjb25kcyB0byBzbGVlcFxuICogQHJldHVybnMgQSBwcm9taXNlIHRoYXQgaXMgcmVzb2x2ZWQgYWZ0ZXIgYG1zYCBtaWxsaXNlY29uZHMuXG4gKi9cbmV4cG9ydCBmdW5jdGlvbiBkZWxheShtczogbnVtYmVyKTogUHJvbWlzZTx2b2lkPiB7XG4gIHJldHVybiBuZXcgUHJvbWlzZSgocmVzb2x2ZSkgPT4gc2V0VGltZW91dChyZXNvbHZlLCBtcykpO1xufVxuXG4vKipcbiAqIENvbnZlcnRzIGEgc3RyaW5nIG9yIGEgdWludDggYXJyYXkgaW50byBhIGhleCBzdHJpbmcuIFN0cmluZ3MgYXJlIGVuY29kZWQgaW4gVVRGLTggYmVmb3JlXG4gKiBiZWluZyBjb252ZXJ0ZWQgdG8gaGV4LlxuICpcbiAqIEBwYXJhbSBtZXNzYWdlIFRoZSBpbnB1dFxuICogQHJldHVybnMgSGV4IHN0cmluZyBwcmVmaXhlZCB3aXRoIFwiMHhcIlxuICovXG5leHBvcnQgZnVuY3Rpb24gZW5jb2RlVG9IZXgobWVzc2FnZTogc3RyaW5nIHwgVWludDhBcnJheSk6IHN0cmluZyB7XG4gIGNvbnN0IGJ1ZmYgPSB0eXBlb2YgbWVzc2FnZSA9PT0gXCJzdHJpbmdcIiA/IEJ1ZmZlci5mcm9tKG1lc3NhZ2UsIFwidXRmOFwiKSA6IEJ1ZmZlci5mcm9tKG1lc3NhZ2UpO1xuICByZXR1cm4gXCIweFwiICsgYnVmZi50b1N0cmluZyhcImhleFwiKTtcbn1cbiJdfQ==

@@ -1,0 +1,29 @@
+{
+  "name": "@cubist-labs/cubesigner-sdk-ethers-v6",
+  "version": "0.4.104-0",
+  "description": "Ethers.js v6 Signer implementation",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "tsconfig.json",
+    "src/**",
+    "dist/**",
+    "../../NOTICE",
+    "../../LICENSE-APACHE",
+    "../../LICENSE-MIT"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "tsc",
+    "test": "jest --maxWorkers=1"
+  },
+  "peerDependencies": {
+    "@cubist-labs/cubesigner-sdk": "^0.4.104-0",
+    "ethers": "6.13.4"
+  },
+  "directories": {
+    "test": "test"
+  }
+}
