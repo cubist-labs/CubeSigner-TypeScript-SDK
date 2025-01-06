@@ -1,0 +1,26 @@
+{
+  "name": "cubesigner-rotation-lambda",
+  "version": "0.1.0",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "files": [
+    "tsconfig.json",
+    "src/**",
+    "dist/**",
+    "../../../../LICENSE-APACHE",
+    "../../../../LICENSE-MIT"
+  ],
+  "scripts": {
+    "prebuild": "npm ci",
+    "build": "npx tsc -noEmit && npx esbuild ./src/index.ts --conditions=cubist:esbuild --bundle --minify --preserve-symlinks --platform=node --target=node20 --outdir=."
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "esbuild": "0.24.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@cubist-labs/cubesigner-sdk": "../../packages/sdk",
+    "@cubist-labs/cubesigner-sdk-secretsmanager-storage": "../../packages/secretsmanager-storage"
+  }
+}
