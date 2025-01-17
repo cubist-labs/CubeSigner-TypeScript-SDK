@@ -1,0 +1,37 @@
+{
+  "name": "@cubist-labs/cubesigner-sdk-browser-storage",
+  "version": "0.4.112-0",
+  "description": "Browser-based storage for CubeSigner SDK sessions",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "tsconfig.json",
+    "src/**",
+    "dist/**",
+    "../../NOTICE",
+    "../../LICENSE-APACHE",
+    "../../LICENSE-MIT"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "tsc",
+    "test:playwright": "playwright test",
+    "test:build": "esbuild test/site/testscript.ts --bundle --format=esm --outfile='test/site/testscript.js' --external:crypto",
+    "test:server": "http-server ./test/site -c-1"
+  },
+  "peerDependencies": {
+    "@cubist-labs/cubesigner-sdk": "^0.4.112-0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "@cubist-labs/cubesigner-sdk": "^0.4.112-0",
+    "@cubist-labs/cubesigner-sdk-fs-storage": "^0.4.112-0",
+    "@playwright/test": "^1.44.1",
+    "esbuild": "^0.23.0",
+    "http-server": "^14.1.1"
+  }
+}
