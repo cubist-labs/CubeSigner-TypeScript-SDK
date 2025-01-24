@@ -1,0 +1,1 @@
+../../bitcoinjs/src/util.ts

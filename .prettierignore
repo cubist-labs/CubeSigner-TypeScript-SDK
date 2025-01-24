@@ -1,0 +1,9 @@
+**/dist/
+**/node_modules/
+**/.eslintrc.js
+**/jest.config.js
+**/snap.config.js
+**/*.json
+README.md
+examples/**
+scripts/**
