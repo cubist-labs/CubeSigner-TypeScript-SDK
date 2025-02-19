@@ -1,0 +1,5 @@
+public/*.d.ts
+public/*.js
+src/*.js
+.env
+.vscode
