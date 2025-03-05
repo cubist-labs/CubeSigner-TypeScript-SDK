@@ -1,0 +1,43 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SIGNER_SESSION_PATH = exports.MANAGEMENT_SESSION_PATH = exports.CONFIG_DIR = exports.JsonFileSessionManager = void 0;
+exports.defaultManagementSessionManager = defaultManagementSessionManager;
+exports.defaultSignerSessionManager = defaultSignerSessionManager;
+const path_1 = __importDefault(require("path"));
+const _1 = require(".");
+/** Session storage */
+var file_storage_1 = require("./file_storage");
+Object.defineProperty(exports, "JsonFileSessionManager", { enumerable: true, get: function () { return file_storage_1.JsonFileSessionManager; } });
+/**
+ * Directory where CubeSigner stores config files.
+ *
+ * @returns Config dir
+ */
+function configDir() {
+    const configDir = process.platform === "darwin"
+        ? `${process.env.HOME}/Library/Application Support`
+        : `${process.env.HOME}/.config`;
+    return path_1.default.join(configDir, "cubesigner");
+}
+/** Directory where CubeSigner stores config files. */
+exports.CONFIG_DIR = configDir();
+/** Default file path where the management session token is stored. */
+exports.MANAGEMENT_SESSION_PATH = path_1.default.join(exports.CONFIG_DIR, "management-session.json");
+/** Default file path where the signer session token is stored. */
+exports.SIGNER_SESSION_PATH = path_1.default.join(exports.CONFIG_DIR, "signer-session.json");
+/**
+ * @returns Manager pointing to the default management session file on disk.
+ */
+function defaultManagementSessionManager() {
+    return new _1.JsonFileSessionManager(exports.MANAGEMENT_SESSION_PATH);
+}
+/**
+ * @returns Manager pointing to the default signer session file on disk.
+ */
+function defaultSignerSessionManager() {
+    return new _1.JsonFileSessionManager(exports.SIGNER_SESSION_PATH);
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBK0JBLDBFQUVDO0FBS0Qsa0VBRUM7QUF4Q0QsZ0RBQXdCO0FBQ3hCLHdCQUEyQztBQUUzQyxzQkFBc0I7QUFDdEIsK0NBQWtGO0FBQXpFLHNIQUFBLHNCQUFzQixPQUEwQjtBQUV6RDs7OztHQUlHO0FBQ0gsU0FBUyxTQUFTO0lBQ2hCLE1BQU0sU0FBUyxHQUNiLE9BQU8sQ0FBQyxRQUFRLEtBQUssUUFBUTtRQUMzQixDQUFDLENBQUMsR0FBRyxPQUFPLENBQUMsR0FBRyxDQUFDLElBQUksOEJBQThCO1FBQ25ELENBQUMsQ0FBQyxHQUFHLE9BQU8sQ0FBQyxHQUFHLENBQUMsSUFBSSxVQUFVLENBQUM7SUFDcEMsT0FBTyxjQUFJLENBQUMsSUFBSSxDQUFDLFNBQVMsRUFBRSxZQUFZLENBQUMsQ0FBQztBQUM1QyxDQUFDO0FBRUQsc0RBQXNEO0FBQ3pDLFFBQUEsVUFBVSxHQUFHLFNBQVMsRUFBRSxDQUFDO0FBRXRDLHNFQUFzRTtBQUN6RCxRQUFBLHVCQUF1QixHQUFHLGNBQUksQ0FBQyxJQUFJLENBQUMsa0JBQVUsRUFBRSx5QkFBeUIsQ0FBQyxDQUFDO0FBRXhGLGtFQUFrRTtBQUNyRCxRQUFBLG1CQUFtQixHQUFHLGNBQUksQ0FBQyxJQUFJLENBQUMsa0JBQVUsRUFBRSxxQkFBcUIsQ0FBQyxDQUFDO0FBRWhGOztHQUVHO0FBQ0gsU0FBZ0IsK0JBQStCO0lBQzdDLE9BQU8sSUFBSSx5QkFBc0IsQ0FBQywrQkFBdUIsQ0FBQyxDQUFDO0FBQzdELENBQUM7QUFFRDs7R0FFRztBQUNILFNBQWdCLDJCQUEyQjtJQUN6QyxPQUFPLElBQUkseUJBQXNCLENBQUMsMkJBQW1CLENBQUMsQ0FBQztBQUN6RCxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHBhdGggZnJvbSBcInBhdGhcIjtcbmltcG9ydCB7IEpzb25GaWxlU2Vzc2lvbk1hbmFnZXIgfSBmcm9tIFwiLlwiO1xuXG4vKiogU2Vzc2lvbiBzdG9yYWdlICovXG5leHBvcnQgeyBKc29uRmlsZVNlc3Npb25NYW5hZ2VyIGFzIEpzb25GaWxlU2Vzc2lvbk1hbmFnZXIgfSBmcm9tIFwiLi9maWxlX3N0b3JhZ2VcIjtcblxuLyoqXG4gKiBEaXJlY3Rvcnkgd2hlcmUgQ3ViZVNpZ25lciBzdG9yZXMgY29uZmlnIGZpbGVzLlxuICpcbiAqIEByZXR1cm5zIENvbmZpZyBkaXJcbiAqL1xuZnVuY3Rpb24gY29uZmlnRGlyKCk6IHN0cmluZyB7XG4gIGNvbnN0IGNvbmZpZ0RpciA9XG4gICAgcHJvY2Vzcy5wbGF0Zm9ybSA9PT0gXCJkYXJ3aW5cIlxuICAgICAgPyBgJHtwcm9jZXNzLmVudi5IT01FfS9MaWJyYXJ5L0FwcGxpY2F0aW9uIFN1cHBvcnRgXG4gICAgICA6IGAke3Byb2Nlc3MuZW52LkhPTUV9Ly5jb25maWdgO1xuICByZXR1cm4gcGF0aC5qb2luKGNvbmZpZ0RpciwgXCJjdWJlc2lnbmVyXCIpO1xufVxuXG4vKiogRGlyZWN0b3J5IHdoZXJlIEN1YmVTaWduZXIgc3RvcmVzIGNvbmZpZyBmaWxlcy4gKi9cbmV4cG9ydCBjb25zdCBDT05GSUdfRElSID0gY29uZmlnRGlyKCk7XG5cbi8qKiBEZWZhdWx0IGZpbGUgcGF0aCB3aGVyZSB0aGUgbWFuYWdlbWVudCBzZXNzaW9uIHRva2VuIGlzIHN0b3JlZC4gKi9cbmV4cG9ydCBjb25zdCBNQU5BR0VNRU5UX1NFU1NJT05fUEFUSCA9IHBhdGguam9pbihDT05GSUdfRElSLCBcIm1hbmFnZW1lbnQtc2Vzc2lvbi5qc29uXCIpO1xuXG4vKiogRGVmYXVsdCBmaWxlIHBhdGggd2hlcmUgdGhlIHNpZ25lciBzZXNzaW9uIHRva2VuIGlzIHN0b3JlZC4gKi9cbmV4cG9ydCBjb25zdCBTSUdORVJfU0VTU0lPTl9QQVRIID0gcGF0aC5qb2luKENPTkZJR19ESVIsIFwic2lnbmVyLXNlc3Npb24uanNvblwiKTtcblxuLyoqXG4gKiBAcmV0dXJucyBNYW5hZ2VyIHBvaW50aW5nIHRvIHRoZSBkZWZhdWx0IG1hbmFnZW1lbnQgc2Vzc2lvbiBmaWxlIG9uIGRpc2suXG4gKi9cbmV4cG9ydCBmdW5jdGlvbiBkZWZhdWx0TWFuYWdlbWVudFNlc3Npb25NYW5hZ2VyKCk6IEpzb25GaWxlU2Vzc2lvbk1hbmFnZXIge1xuICByZXR1cm4gbmV3IEpzb25GaWxlU2Vzc2lvbk1hbmFnZXIoTUFOQUdFTUVOVF9TRVNTSU9OX1BBVEgpO1xufVxuXG4vKipcbiAqIEByZXR1cm5zIE1hbmFnZXIgcG9pbnRpbmcgdG8gdGhlIGRlZmF1bHQgc2lnbmVyIHNlc3Npb24gZmlsZSBvbiBkaXNrLlxuICovXG5leHBvcnQgZnVuY3Rpb24gZGVmYXVsdFNpZ25lclNlc3Npb25NYW5hZ2VyKCk6IEpzb25GaWxlU2Vzc2lvbk1hbmFnZXIge1xuICByZXR1cm4gbmV3IEpzb25GaWxlU2Vzc2lvbk1hbmFnZXIoU0lHTkVSX1NFU1NJT05fUEFUSCk7XG59XG4iXX0=
