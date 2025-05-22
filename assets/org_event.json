@@ -1,0 +1,11 @@
+{
+  "Message": "{\"org\":\"Org#06aadcc8-1669-4cb5-a129-a293de388b70\",\"utc_timestamp\":1732616764477,\"event\":\"cubist::org_event\",\"triggered_by\":\"User#8d4ba3d1-eb35-4653-94eb-3352b42a6ead\",\"org_event\":\"KeyCreated\",\"key_type\":\"SecpEthAddr\",\"owner_id\":\"User#8d4ba3d1-eb35-4653-94eb-3352b42a6ead\",\"key_ids\":[\"Key#0xaca05602937151974754ea35c9d3e9cb20de9c07\"]}",
+  "MessageId": "724880eb-a71f-5751-b74c-df54036250d7",
+  "Signature": "TiP83joocQGznRjIYqpB7jtxg8PNfWTF3ZPRTqJmyDJLGr//SP6ecth9Js1klnOkq7zoIL16lg7qBhYG+DzFQtjccZmVZOq3y9LWKvzdJTkd/pIO2TzfdxXnU8zkG6R15BdmGwffgLsjRC1a4pYWZYYu8pGml1+Hjry5FEZoTiHQzItPovfnyZoPhtfNP8OmknHfbw6wh0UBb27R3S8ElKaFC9IDJasbytOvlW4P8M9541KIyPJ1/iOu9QHdk8kSDxHE94KWp5hS+6POlfBO0gnmOkr/HbqCrrL3CVMA4Iah8MUOIR5o7Fyecngtvcfljl1nisXzfRl8DNUpsDBMQA==",
+  "SignatureVersion": "2",
+  "SigningCertURL": "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-9c6465fa7f48f5cacd23014631ec1136.pem",
+  "Timestamp": "2024-11-26T10:26:05.673Z",
+  "TopicArn": "arn:aws:sns:us-east-1:819335423237:Beta-CubeSignerStack-OrgEventsTopic4416298A-beobtbku2Wa8",
+  "Type": "Notification",
+  "UnsubscribeURL": "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:819335423237:Beta-CubeSignerStack-OrgEventsTopic4416298A-beobtbku2Wa8:eb0e93d7-6d91-47fb-b6b6-01ef31effe2c"
+}
