@@ -1,0 +1,19 @@
+{
+  "name": "cubesigner-rotation-lambda-workspace",
+  "version": "0.1.0",
+  "license": "(MIT-0 OR Apache-2.0)",
+  "author": "Cubist, Inc.",
+  "workspaces": [
+    "cdk",
+    "lambdas/rotation-lambda",
+    "scripts"
+  ],
+  "scripts": {
+    "build": "true",
+    "gen-session": "npm -C scripts run gen-session",
+    "use-session": "npm -C scripts run use-session"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
