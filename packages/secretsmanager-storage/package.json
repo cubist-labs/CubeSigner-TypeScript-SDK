@@ -1,0 +1,39 @@
+{
+  "name": "@cubist-labs/cubesigner-sdk-secretsmanager-storage",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cubist-labs/CubeSigner-TypeScript-SDK.git",
+    "directory": "packages/secretsmanager-storage"
+  },
+  "version": "0.4.153-0",
+  "description": "CubeSigner SDK session manager backed by AWS Secrets Manager",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "tsconfig.json",
+    "src/**",
+    "dist/**",
+    "../../NOTICE",
+    "../../LICENSE-APACHE",
+    "../../LICENSE-MIT"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "tsc",
+    "test": "npx --node-options='--experimental-vm-modules' jest --maxWorkers=1"
+  },
+  "peerDependencies": {
+    "@cubist-labs/cubesigner-sdk": "^0.4.153-0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.682.0"
+  },
+  "devDependencies": {
+    "aws-sdk-client-mock": "^4.1.0"
+  }
+}
