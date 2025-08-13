@@ -1,0 +1,6 @@
+{
+  "Dev-CubeSignerStack": {
+    "SignerApiRoot": "https://beta.signer.cubist.dev",
+    "OrgEventsTopicArn": "arn:aws:sns:us-east-1:819335423237:Beta-CubeSignerStack-OrgEventsTopic4416298A-beobtbku2Wa8"
+  }
+}
