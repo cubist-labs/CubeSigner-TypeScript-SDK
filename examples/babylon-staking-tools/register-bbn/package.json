@@ -1,0 +1,14 @@
+{
+  "name": "register-bbn",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "prebuild": "npm i",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node ./dist/index.js"
+  },
+  "author": "Cubist, Inc.",
+  "license": "MIT OR Apache-2.0",
+  "description": "Babylon Phase2 pre-registration deposit flow"
+}
