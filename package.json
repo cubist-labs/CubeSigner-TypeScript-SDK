@@ -17,6 +17,7 @@
     "packages/fs-storage",
     "packages/org-utils",
     "packages/secretsmanager-storage",
+    "packages/az-keyvault-storage",
     "packages/ethers-v6",
     "packages/key-import",
     "packages/viem"
@@ -26,6 +27,7 @@
     "build:examples": "for e in examples/*; do npm -C $e ci --ignore-scripts && npm -C $e run build || exit 1; done",
     "test": "npm run test --workspaces --if-present -- --pass-with-no-tests",
     "test:playwright": "npm run test:playwright --workspaces --if-present -- --pass-with-no-tests",
+    "test:az-keyvault": "npm run test --workspace=packages/az-keyvault-storage",
     "fix": "eslint . --fix",
     "lint": "eslint .",
     "fmt": "prettier --write .",
