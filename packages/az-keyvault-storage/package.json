@@ -1,0 +1,40 @@
+{
+  "name": "@cubist-labs/cubesigner-sdk-az-keyvault-storage",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cubist-labs/CubeSigner-TypeScript-SDK.git",
+    "directory": "packages/az-keyvault-storage"
+  },
+  "version": "0.4.241",
+  "description": "CubeSigner SDK session manager backed by Azure Key Vault",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "tsconfig.json",
+    "src/**",
+    "dist/**",
+    "../../NOTICE",
+    "../../LICENSE-APACHE",
+    "../../LICENSE-MIT"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "tsc",
+    "test": "npx --node-options='--experimental-vm-modules' jest --maxWorkers=1"
+  },
+  "peerDependencies": {
+    "@cubist-labs/cubesigner-sdk": "^0.4.241"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@azure/keyvault-secrets": "^4.9.0",
+    "@azure/identity": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.2"
+  }
+}
