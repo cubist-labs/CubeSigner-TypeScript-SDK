@@ -1,0 +1,38 @@
+{
+  "name": "@cubist-labs/cubesigner-sdk-viem",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cubist-labs/CubeSigner-TypeScript-SDK.git",
+    "directory": "packages/viem"
+  },
+  "version": "0.4.208",
+  "type": "module",
+  "description": "Viem CustomSource implementation",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "tsconfig.json",
+    "src/**",
+    "dist/**",
+    "../../NOTICE",
+    "../../LICENSE-APACHE",
+    "../../LICENSE-MIT"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "tsc",
+    "test": "jest --maxWorkers=1"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "peerDependencies": {
+    "@cubist-labs/cubesigner-sdk": "^0.4.208",
+    "viem": "^2.38.2"
+  },
+  "devDependencies": {
+    "@cubist-labs/cubesigner-sdk-fs-storage": "^0.4.208"
+  }
+}

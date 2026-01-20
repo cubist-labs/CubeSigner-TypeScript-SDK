@@ -1,0 +1,44 @@
+{
+    "name": "@cubist-labs/cubesigner-sdk",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cubist-labs/CubeSigner-TypeScript-SDK.git",
+        "directory": "packages/sdk"
+    },
+    "version": "0.4.208",
+    "description": "CubeSigner TypeScript SDK",
+    "license": "MIT OR Apache-2.0",
+    "author": "Cubist, Inc.",
+    "main": "dist/src/index.js",
+    "files": [
+        "tsconfig.json",
+        "src/**",
+        "dist/**",
+        "../../NOTICE",
+        "../../LICENSE-APACHE",
+        "../../LICENSE-MIT"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "prepack": "npm run build",
+        "gen-schema": "openapi-typescript ./spec/openapi.json --output ./src/schema.ts",
+        "test": "jest --maxWorkers=1",
+        "typedoc": "typedoc"
+    },
+    "dependencies": {
+        "openapi-fetch": "0.8.2"
+    },
+    "optionalDependencies": {
+        "@hpke/core": "^1.2.7"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "directories": {
+        "test": "test"
+    },
+    "devDependencies": {
+        "openapi-typescript-helpers": "^0.0.7",
+        "typescript": "^5.5"
+    }
+}
