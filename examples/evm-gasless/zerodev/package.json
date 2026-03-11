@@ -1,0 +1,26 @@
+{
+  "name": "cubesigner-zerodev-example",
+  "version": "1.0.0",
+  "description": "An example using a CubeSigner wallet and a ZeroDev paymaster for gasless transactions",
+  "type": "module",
+  "scripts": {
+    "prebuild": "npm ci",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "tsx src/index.ts"
+  },
+  "author": "",
+  "license": "MIT OR Apache-2.0",
+  "devDependencies": {
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@cubist-labs/cubesigner-sdk": "../../../packages/sdk",
+    "@cubist-labs/cubesigner-sdk-fs-storage": "../../../packages/fs-storage",
+    "@cubist-labs/cubesigner-sdk-viem": "../../../packages/viem",
+    "@zerodev/ecdsa-validator": "^5.4.9",
+    "@zerodev/sdk": "^5.5.3",
+    "viem": "^2.38.0"
+  }
+}
