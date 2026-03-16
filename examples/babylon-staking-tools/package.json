@@ -1,0 +1,52 @@
+{
+  "name": "@cubist-labs/babylon-staking-tools",
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "workspaces": [
+    "prove-inclusion-bbn",
+    "register-bbn",
+    "unbond-bbn-phase1",
+    "withdraw-bbn"
+  ],
+  "scripts": {
+    "prebuild": "npm install",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "eslint .",
+    "fmt": "prettier --write .",
+    "fmt-check": "prettier --check ."
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.16.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^22.5.2",
+    "@types/node-fetch": "^2.6.11",
+    "eslint": "^9.16.0",
+    "eslint-config-google": "git://github.com/google/eslint-config-google#3ae571a",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsdoc": "^50.2.2",
+    "prettier": "3.3.3",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.27.9",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.17.0"
+  },
+  "dependencies": {
+    "@babylonlabs-io/babylon-proto-ts": "^1.0.1",
+    "@bitcoin-js/tiny-secp256k1-asmjs": "^2.2.3",
+    "@cubist-labs/cubesigner-sdk": "^0.4.141-0",
+    "@cubist-labs/cubesigner-sdk-fs-storage": "^0.4.141-0",
+    "bitcoinjs-lib": "^6.1.7",
+    "@cosmjs/amino": "^0.33.1",
+    "@cosmjs/crypto": "^0.33.1",
+    "@cosmjs/encoding": "^0.33.1",
+    "@cosmjs/proto-signing": "^0.33.1",
+    "@cosmjs/stargate": "^0.33.1",
+    "cosmjs-types": "^0.9.0"
+  }
+}
