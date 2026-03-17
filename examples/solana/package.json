@@ -1,0 +1,25 @@
+{
+  "name": "cubesigner-solana-example",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "dist/index.js",
+  "scripts": {
+    "prebuild": "npm ci",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node ./dist/index.js"
+  },
+  "dependencies": {
+    "@cubist-labs/cubesigner-sdk": "../../packages/sdk",
+    "@cubist-labs/cubesigner-sdk-fs-storage": "../../packages/fs-storage",
+    "@solana-program/system": "^0.10.0",
+    "@solana/kit": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,7 @@
+{
+    "Dev-CubeSignerStack": {
+        "Region": "us-east-1",
+        "SignerApiRoot": "https://gamma.signer.cubist.dev",
+        "OrgEventsTopicArn": "arn:aws:sns:us-east-1:453904756570:Gamma-CubeSignerStack-OrgEventsTopic4416298A-MpV66OYPFQV0"
+    }
+}

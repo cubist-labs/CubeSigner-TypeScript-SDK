@@ -1,0 +1,31 @@
+{
+  "name": "waas-in-a-box",
+  "version": "1.0.0",
+  "description": "A server and client example for a Wallet-as-a-Service backed by CubeSigner",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "prebuild": "npm ci",
+    "build": "vite build && tsc -p . --noEmit"
+  },
+  "author": "",
+  "license": "MIT OR Apache-2.0",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@types/react": "^18.3.12",
+    "express": "^4.21.1",
+    "openid-client": "^6.1.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsx": "^4.19.2",
+    "vite": "^5.4.11",
+    "vite-express": "^0.19.0"
+  },
+  "dependencies": {
+    "@cubist-labs/cubesigner-sdk": "../../packages/sdk",
+    "@cubist-labs/cubesigner-sdk-browser-storage": "../../packages/browser-storage",
+    "@types/express": "^5.0.0",
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.5"
+  }
+}
