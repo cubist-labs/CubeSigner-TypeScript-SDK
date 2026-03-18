@@ -1,0 +1,25 @@
+{
+  "name": "cubesigner-walletconnect-example",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Example of how to use CubeSigner with WalletConnect's WalletKit",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "scripts": {
+    "prebuild": "npm ci",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@cubist-labs/cubesigner-sdk": "../../packages/sdk",
+    "@cubist-labs/cubesigner-sdk-fs-storage": "../../packages/fs-storage",
+    "@cubist-labs/cubesigner-sdk-ethers-v6": "../../packages/ethers-v6",
+    "@walletconnect/utils": "^2.13.3",
+    "@walletconnect/web3wallet": "^1.12.3",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.8",
+    "@walletconnect/types": "^2.13.3"
+  }
+}
