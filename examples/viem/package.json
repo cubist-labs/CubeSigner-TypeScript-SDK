@@ -1,0 +1,26 @@
+{
+  "name": "cubesigner-viem-example",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "dist/index.js",
+  "scripts": {
+    "prebuild": "npm ci",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "fmt": "prettier --write .",
+    "start": "node ./dist/index.js"
+  },
+  "dependencies": {
+    "@cubist-labs/cubesigner-sdk": "../../packages/sdk",
+    "@cubist-labs/cubesigner-sdk-fs-storage": "../../packages/fs-storage",
+    "@cubist-labs/cubesigner-sdk-viem": "file:../../packages/viem",
+    "viem": "^2.21.54"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
