@@ -1,0 +1,20 @@
+{
+  "name": "rotation-lambda-scripts",
+  "version": "0.1.0",
+  "license": "MIT OR Apache-2.0",
+  "scripts": {
+    "prebuild": "npm ci",
+    "build": "tsc",
+    "gen-session": "npm run build && node ./dist/scripts/src/gen-session.js",
+    "use-session": "npm run build && node ./dist/scripts/src/use-session.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@cubist-labs/cubesigner-sdk": "../../packages/sdk",
+    "@cubist-labs/cubesigner-sdk-fs-storage": "../../packages/fs-storage",
+    "@cubist-labs/cubesigner-sdk-secretsmanager-storage": "../../packages/secretsmanager-storage"
+  }
+}
