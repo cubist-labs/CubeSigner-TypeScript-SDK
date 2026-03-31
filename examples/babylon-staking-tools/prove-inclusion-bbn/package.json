@@ -1,0 +1,14 @@
+{
+  "name": "prove-inclusion-bbn",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "prebuild": "npm i",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node ./dist/index.js"
+  },
+  "author": "Cubist, Inc.",
+  "license": "MIT OR Apache-2.0",
+  "description": "Generate and post an inclusion proof for a Bitcoin staking transaction"
+}
