@@ -11,14 +11,7 @@ import type {
   SessionLifetime,
   SessionManager,
 } from "@cubist-labs/cubesigner-sdk";
-import {
-  CubeSignerClient,
-  MemorySessionManager,
-  isStale,
-  metadata,
-  refresh,
-  serializeRefreshToken,
-} from "@cubist-labs/cubesigner-sdk";
+import { CubeSignerClient, MemorySessionManager, isStale, metadata, refresh } from "@cubist-labs/cubesigner-sdk";
 import { authenticator } from "otplib";
 import * as dotenv from "dotenv";
 
@@ -113,9 +106,8 @@ describe("Session Management", () => {
       "manage:session:get",
     ]);
 
-    // Test that the output of `serializeRefreshToken()` matches the
-    // `refresh_token` field
-    expect(session.refresh_token).to.eq(serializeRefreshToken(session.session_info));
+    // Test that the top-level `refresh_token` stores the raw token from session_info
+    expect(session.refresh_token).to.eq(session.session_info.refresh_token);
 
     const mgr = new MemorySessionManager(session);
     const client = await CubeSignerClient.create(mgr);

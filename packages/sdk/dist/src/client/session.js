@@ -268,10 +268,8 @@ function parseBase64SessionData(sessionDataString) {
     }
     // Compute `refresh_token` for old sessions that may not have it set
     const info = data["session_info"];
-    const refreshToken = data["refresh_token"];
-    const refreshTokenFromInfo = serializeRefreshToken(info);
-    if (refreshToken === null || refreshToken === undefined) {
-        data["refresh_token"] = refreshTokenFromInfo;
+    if (data["refresh_token"] === null || data["refresh_token"] === undefined) {
+        data["refresh_token"] = info.refresh_token;
     }
     return data;
 }

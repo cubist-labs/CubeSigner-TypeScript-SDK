@@ -353,12 +353,11 @@ export function parseBase64SessionData(sessionDataString: string): SessionData {
     }
   }
 
-  // Compute `refresh_token` for old sessions that may not have it set
+  // Ensure `refresh_token` is present for legacy sessions. We now store the raw
+  // refresh token from `session_info.refresh_token` instead of a composed OAuth token.
   const info = data["session_info"] as ClientSessionInfo;
-  const refreshToken = data["refresh_token"];
-  const refreshTokenFromInfo = serializeRefreshToken(info);
-  if (refreshToken === null || refreshToken === undefined) {
-    data["refresh_token"] = refreshTokenFromInfo;
+  if (data["refresh_token"] === null || data["refresh_token"] === undefined) {
+    data["refresh_token"] = info.refresh_token;
   }
 
   return data as SessionData;
