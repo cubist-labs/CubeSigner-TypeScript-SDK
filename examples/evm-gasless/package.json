@@ -1,0 +1,16 @@
+{
+  "name": "@cubist-labs/evm-gasless",
+  "version": "0.4.0",
+  "description": "Examples of how to integrate CubeSigner with Account Abstraction providers",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "workspaces": [
+    "zerodev",
+    "pimlico",
+    "eip-3009"
+  ],
+  "scripts": {
+    "prebuild": "npm ci --ignore-scripts",
+    "build": "npm run build --workspaces --if-present"
+  }
+}
