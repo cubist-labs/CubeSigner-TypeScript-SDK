@@ -1,0 +1,19 @@
+{
+  "name": "webpack",
+  "version": "1.0.0",
+  "description": "Example of how to use the Cubesigner SDK with Webpack",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "test": "npm run build"
+  },
+  "dependencies": {
+    "@cubist-labs/cubesigner-sdk": "../../packages/sdk"
+  },
+  "devDependencies": {
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
