@@ -31,8 +31,8 @@
     "test": "test"
   },
   "dependencies": {
-    "@azure/keyvault-secrets": "^4.9.0",
-    "@azure/identity": "^4.5.0"
+    "@azure/identity": "^4.13.1",
+    "@azure/keyvault-secrets": "^4.11.1"
   },
   "devDependencies": {
     "@types/node": "^22.5.2"
