@@ -1,0 +1,1 @@
+{"version":3,"file":"signer_session.d.ts","sourceRoot":"","sources":["../../src/signer_session.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,GAAG,CAAC;AAEnC,2FAA2F;AAC3F,qBAAa,iBAAiB;;IAG5B,SAAgB,OAAO,EAAE,MAAM,CAAC;IAEhC,0BAA0B;IACpB,MAAM;IAQZ;;;;;;;OAOG;gBACS,SAAS,EAAE,SAAS,EAAE,SAAS,EAAE,MAAM,EAAE,OAAO,EAAE,MAAM;CAKrE"}
