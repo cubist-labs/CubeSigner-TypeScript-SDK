@@ -8,6 +8,7 @@ node_modules/
 dist/
 docs/
 .eslintcache
+*.tgz
 .env
 *.d.ts
 *.d.ts.map

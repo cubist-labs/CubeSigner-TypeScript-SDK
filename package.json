@@ -28,6 +28,7 @@
     "test": "npm run test --workspaces --if-present -- --pass-with-no-tests",
     "test:playwright": "npm run test:playwright --workspaces --if-present -- --pass-with-no-tests",
     "test:az-keyvault": "npm run test --workspace=packages/az-keyvault-storage",
+    "patch:az-keyvault": "npm pack --workspace=packages/az-keyvault-storage",
     "fix": "eslint . --fix",
     "lint": "eslint .",
     "fmt": "prettier --write .",
