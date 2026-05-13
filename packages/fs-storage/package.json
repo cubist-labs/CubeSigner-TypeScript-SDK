@@ -1,0 +1,40 @@
+{
+  "name": "@cubist-labs/cubesigner-sdk-fs-storage",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cubist-labs/CubeSigner-TypeScript-SDK.git",
+    "directory": "packages/fs-storage"
+  },
+  "version": "0.4.250",
+  "description": "Filesystem storage implementation for CubeSigner SDK",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "tsconfig.json",
+    "src/**",
+    "dist/**",
+    "../../NOTICE",
+    "../../LICENSE-APACHE",
+    "../../LICENSE-MIT"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "tsc",
+    "test": "npx --node-options='--experimental-vm-modules' jest --maxWorkers=1"
+  },
+  "peerDependencies": {
+    "@cubist-labs/cubesigner-sdk": "^0.4.250"
+  },
+  "devDependencies": {
+    "@mysten/sui": "^1.21.1",
+    "@solana-program/compute-budget": "^0.15.0",
+    "@solana-program/system": "^0.12.0",
+    "@solana/kit": "^6.8.0",
+    "jose": "^5.10.0"
+  },
+  "directories": {
+    "test": "test"
+  }
+}
