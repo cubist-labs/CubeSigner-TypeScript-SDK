@@ -1,0 +1,16 @@
+{
+  "name": "esm",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Example of how to use the Cubesigner SDK with Webpack",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "",
+    "test": "node ."
+  },
+  "dependencies": {
+    "@cubist-labs/cubesigner-sdk": "../../packages/sdk"
+ }
+}

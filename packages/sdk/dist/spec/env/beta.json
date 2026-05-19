@@ -1,0 +1,17 @@
+{
+    "Dev-CubeSignerStack": {
+        "Region": "us-east-1",
+        "SignerApiRoot": "https://beta.signer.cubist.dev",
+        "OrgEventsTopicArn": "arn:aws:sns:us-east-1:819335423237:Beta-CubeSignerStack-OrgEventsTopic4416298A-beobtbku2Wa8"
+    },
+    "Dev-CubeSignerStack-eu-west-1": {
+        "Region": "eu-west-1",
+        "SignerApiRoot": "https://eu-west-1.beta.signer.cubist.dev",
+        "OrgEventsTopicArn": "arn:aws:sns:us-east-1:819335423237:Beta-CubeSignerStack-OrgEventsTopic4416298A-beobtbku2Wa8"
+    },
+    "Dev-CubeSignerStack-ap-northeast-1": {
+        "Region": "ap-northeast-1",
+        "SignerApiRoot": "https://ap-northeast-1.beta.signer.cubist.dev",
+        "OrgEventsTopicArn": "arn:aws:sns:us-east-1:819335423237:Beta-CubeSignerStack-OrgEventsTopic4416298A-beobtbku2Wa8"
+    }
+}

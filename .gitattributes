@@ -1,0 +1,3 @@
+dist/** linguist-generated=true
+packages/sdk/spec/openapi.json linguist-generated=true
+packages/sdk/src/schema.ts linguist-generated=true
