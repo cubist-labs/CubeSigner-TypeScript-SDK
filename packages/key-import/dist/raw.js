@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.newRawKeyPackage = newRawKeyPackage;
+const msgpackr_1 = require("msgpackr");
+/**
+ * Create a new RawKeyPackage value
+ *
+ * @param secret The raw secret key to import
+ * @returns A serialized key package for import to CubeSigner
+ */
+function newRawKeyPackage(secret) {
+    const rawPkg = {
+        Secret: secret,
+    };
+    return (0, msgpackr_1.encode)(rawPkg);
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmF3LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL3Jhdy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQWFBLDRDQUtDO0FBbEJELHVDQUE4QztBQU85Qzs7Ozs7R0FLRztBQUNILFNBQWdCLGdCQUFnQixDQUFDLE1BQWtCO0lBQ2pELE1BQU0sTUFBTSxHQUFrQjtRQUM1QixNQUFNLEVBQUUsTUFBTTtLQUNmLENBQUM7SUFDRixPQUFPLElBQUEsaUJBQVEsRUFBQyxNQUFNLENBQUMsQ0FBQztBQUMxQixDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgZW5jb2RlIGFzIG1wRW5jb2RlIH0gZnJvbSBcIm1zZ3BhY2tyXCI7XG5cbi8vIFRoZSBLZXlQYWNrYWdlIHR5cGUgZnJvbSBDdWJlU2lnbmVyIChyYXcgc2VjcmV0IHZhcmlhbnQpXG5leHBvcnQgdHlwZSBSYXdLZXlQYWNrYWdlID0ge1xuICBTZWNyZXQ6IFVpbnQ4QXJyYXk7XG59O1xuXG4vKipcbiAqIENyZWF0ZSBhIG5ldyBSYXdLZXlQYWNrYWdlIHZhbHVlXG4gKlxuICogQHBhcmFtIHNlY3JldCBUaGUgcmF3IHNlY3JldCBrZXkgdG8gaW1wb3J0XG4gKiBAcmV0dXJucyBBIHNlcmlhbGl6ZWQga2V5IHBhY2thZ2UgZm9yIGltcG9ydCB0byBDdWJlU2lnbmVyXG4gKi9cbmV4cG9ydCBmdW5jdGlvbiBuZXdSYXdLZXlQYWNrYWdlKHNlY3JldDogVWludDhBcnJheSk6IFVpbnQ4QXJyYXkge1xuICBjb25zdCByYXdQa2c6IFJhd0tleVBhY2thZ2UgPSB7XG4gICAgU2VjcmV0OiBzZWNyZXQsXG4gIH07XG4gIHJldHVybiBtcEVuY29kZShyYXdQa2cpO1xufVxuIl19
