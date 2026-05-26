@@ -50,8 +50,9 @@ export function decodeBase64(b64: string): Uint8Array {
  */
 export function decodeBase64Url(b64url: string): Uint8Array {
   // NOTE: there is no "base64url" encoding in the "buffer" module for the browser (unlike in node.js)
-  const b64 = b64url.replace(/-/g, "+").replace(/_/g, "/").replace(/=*$/g, "");
-  return decodeBase64(b64);
+  const b64 = b64url.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = b64.padEnd(b64.length + ((4 - (b64.length % 4)) % 4), "=");
+  return decodeBase64(padded);
 }
 
 /**

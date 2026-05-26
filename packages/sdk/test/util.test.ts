@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { retryOn5XX } from "../src/retry";
-import { encodeToHex, decodeFromHex } from "../src/util";
+import { encodeToHex, decodeFromHex, decodeBase64Url, encodeToBase64Url } from "../src/util";
 
 describe("retryOn5XX", () => {
   it("doesn't retry on 200", async () => {
@@ -121,5 +121,19 @@ describe("decodeFromHex", () => {
 
   it("throws on odd-length hexstrings", () => {
     expect(() => decodeFromHex("0x1")).to.throw();
+  });
+});
+
+
+describe("base64url helpers", () => {
+  it("decodes unpadded base64url strings", () => {
+    expect(decodeBase64Url("aGVsbG8")).to.deep.eq(new Uint8Array([104, 101, 108, 108, 111]));
+  });
+
+  it("round-trips bytes without padding", () => {
+    const bytes = new Uint8Array([0xde, 0xad, 0xbe, 0xef, 0x01]);
+    const encoded = encodeToBase64Url(bytes);
+    expect(encoded).to.eq("3q2-7wE");
+    expect(decodeBase64Url(encoded)).to.deep.eq(bytes);
   });
 });
