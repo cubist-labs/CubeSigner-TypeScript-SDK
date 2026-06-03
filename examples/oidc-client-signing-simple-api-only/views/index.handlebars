@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title>Sign-In with Google and Sign EVM transaction</title>
+  <script>
+    var orgName = "{{orgName}}";
+    var rootUrl = "{{rootUrl}}";
+  </script>
+</head>
+<body>
+  <p>Sign-In with Google and Sign EVM transaction transparently</p>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+    function onGoogleLogin(res) {
+      const oidcToken = res.credential;
+      loginWithOidcTokenAndSignTx(oidcToken);
+    }
+  </script>
+  <script src="main.js"></script>
+  <div class="signingButtons">
+    <div class="google">
+      <div id="g_id_onload" data-client_id="{{googleClientId}}" data-context="signin" data-ux_mode="popup"
+        data-callback="onGoogleLogin" data-auto_select="true" data-itp_support="true">
+      </div>
+      <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+        data-text="signin_with" data-size="large" data-logo_alignment="left">
+      </div>
+    </div>
+  </div>
+  </body>
+</html>
