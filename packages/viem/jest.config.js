@@ -1,0 +1,11 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+export default {
+  preset: "ts-jest",
+  testTimeout: 15000,
+  testEnvironment: "node",
+  testMatch: ["<rootDir>/test/*.test.[jt]s"],
+  reporters: [
+    "default",
+    ["jest-summary-reporter", {"failuresOnly": false}]
+  ]
+};
