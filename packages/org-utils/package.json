@@ -1,0 +1,40 @@
+{
+  "name": "@cubist-labs/cubesigner-sdk-org-utils",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cubist-labs/CubeSigner-TypeScript-SDK.git",
+    "directory": "packages/org-utils"
+  },
+  "version": "0.4.268",
+  "description": "Optional utilities for CubeSigner SDK",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "tsconfig.json",
+    "src/**",
+    "dist/**",
+    "../../NOTICE",
+    "../../LICENSE-APACHE",
+    "../../LICENSE-MIT"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "tsc",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@cubist-labs/cubesigner-sdk": "^0.4.268"
+  },
+  "directories": {
+    "test": "test"
+  }
+}
