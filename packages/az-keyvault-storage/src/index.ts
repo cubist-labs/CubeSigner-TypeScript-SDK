@@ -135,10 +135,10 @@ export class AzureExclusiveKeyVaultSessionManager extends ExclusiveSessionManage
     this.#sessionManager = new AzureKeyVaultSessionManager(vaultUrl, secretName, opts);
   }
 
-  onInvalidToken(): Promise<void> {
+  async onInvalidToken(): Promise<void> {
     return this.#sessionManager.onInvalidToken();
   }
-  
+
   retrieve(): Promise<SessionData> {
     return this.#sessionManager.getSessionData();
   }

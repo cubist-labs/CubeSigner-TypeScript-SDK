@@ -9,8 +9,15 @@
   "description": "CubeSigner SDK session manager backed by Azure Key Vault",
   "license": "MIT OR Apache-2.0",
   "author": "Cubist, Inc.",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "files": [
     "tsconfig.json",
     "src/**",
@@ -34,7 +41,5 @@
     "@azure/identity": "^4.13.1",
     "@azure/keyvault-secrets": "^4.11.2"
   },
-  "devDependencies": {
-    "@types/node": "^22.5.2"
-  }
+  "devDependencies": {}
 }
