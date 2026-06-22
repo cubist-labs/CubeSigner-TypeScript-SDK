@@ -17,6 +17,7 @@
     "packages/fs-storage",
     "packages/org-utils",
     "packages/secretsmanager-storage",
+    "packages/az-keyvault-storage",
     "packages/ethers-v6",
     "packages/key-import",
     "packages/viem"
@@ -27,6 +28,8 @@
     "test": "npm run test --workspaces --if-present -- --passWithNoTests",
     "test:playwright": "npm run test:playwright --workspaces --if-present -- --pass-with-no-tests",
     "check:licenses": "license-checker-rseidelsohn --excludePrivatePackages --summary --onlyAllow '0BSD;Apache-2.0;BSD-2-Clause;BSD-3-Clause;BlueOak-1.0.0;CC-BY-3.0;CC-BY-4.0;CC0-1.0;ISC;MIT;Python-2.0;MPL-2.0'",
+    "test:az-keyvault": "npm run test --workspace=packages/az-keyvault-storage",
+    "patch:az-keyvault": "npm pack --workspace=packages/az-keyvault-storage",
     "fix": "eslint . --fix",
     "lint": "eslint .",
     "fmt": "prettier --write .",
