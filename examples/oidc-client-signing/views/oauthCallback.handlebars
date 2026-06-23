@@ -1,0 +1,11 @@
+<script>
+    let params = new URLSearchParams(window.location.search);
+    let state = params.get("state");
+    let code = params.get("code");
+    if (state && params) {
+        new BroadcastChannel("oauth_code").postMessage({
+            code, state
+        })
+    }
+    window.close();
+</script>
