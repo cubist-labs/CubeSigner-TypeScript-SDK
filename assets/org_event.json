@@ -1,0 +1,11 @@
+{
+  "Message": "{\"event_id\":\"d64a9b37-d4e0-4f66-9e4f-717fd7c75bd3\",\"request_id\":\"61d1b321-5943-4da1-acad-d436c796ae8c\",\"org\":\"Org#3765d967-fec3-4aae-8e8e-34f07c3e59a4\",\"utc_timestamp\":1756943406774,\"event\":\"cubist::org_event\",\"triggered_by\":\"User#a4c82478-f0c1-70ab-0308-b2efbe49634d\",\"org_event\":\"KeyCreated\",\"key_type\":\"SecpEthAddr\",\"owner_id\":\"User#a4c82478-f0c1-70ab-0308-b2efbe49634d\",\"key_ids\":[\"Key#0xf7a11f85709b9f2ab2dde9efb8a8102ebe3cc8a8\"]}",
+  "MessageId": "6303c19f-601c-5e2c-8e70-a0adb673f3a6",
+  "Signature": "OX5MvsZAlCEL7WVxq0gRPWhBgMQxaM4wGjLBbkPMIPQ9A+ZZAS3D4MhTk6veztORF36U02lAgZc1BcP3hA1WR3FtFo+8AdwqGXhsKWx6ZSmvTNrCo6T/rd6arSbg1UEVhO1vuOuC6CAyFqX5zrFvSDgKLZK9qkDE5H+trMiyA0HC6WZRmhPNmQ1yW8TxqfZ7VtQJ0DvvmF8O1zixmJIuINDfNpTO4c46DXmCEYR7R3HPeujOGZOsFFv74JN9yqnG9Uq+/oC9zqGAdC5kmbcIMYgGOy8myxMOlY21PcBv1Hisi9BWx0/VmFqwwvEzL+J8uEbF6tuPjKN437DWVsZUxA==",
+  "SignatureVersion": "2",
+  "SigningCertURL": "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-6209c161c6221fdf56ec1eb5c821d112.pem",
+  "Timestamp": "2025-09-03T23:50:07.846Z",
+  "TopicArn": "arn:aws:sns:us-east-1:053176135220:Sandbox-CubeSignerStack1234-OrgEventsTopic4416298A-7laxbPjh4XNV",
+  "Type": "Notification",
+  "UnsubscribeURL": "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:053176135220:Sandbox-CubeSignerStack1234-OrgEventsTopic4416298A-7laxbPjh4XNV:e34a7879-efd5-497e-86b0-f9aa187b6f50"
+}
