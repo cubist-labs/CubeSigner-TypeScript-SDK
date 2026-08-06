@@ -1,0 +1,1 @@
+../../register-bbn/src/cosmos_signer.ts
