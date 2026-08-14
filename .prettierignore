@@ -1,0 +1,9 @@
+**/dist/
+**/node_modules/
+**/.eslintrc.js
+**/jest.config.js
+**/snap.config.js
+README.md
+examples/**
+scripts/**
+packages/sdk/spec/openapi.json
