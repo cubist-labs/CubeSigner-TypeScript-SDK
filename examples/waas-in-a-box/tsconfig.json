@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Node16",
+    "moduleResolution": "node16",
+    "jsx": "react",
+    "skipLibCheck": true,
+    "types": ["vite/client"]
+  },
+  "exclude": ["node_modules"]
+}
