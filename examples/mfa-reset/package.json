@@ -1,0 +1,27 @@
+{
+  "name": "cubesigner-mfa-reset-example",
+  "version": "1.0.0",
+  "description": "End-to-end MFA reset flow: create a user, enroll a TOTP factor, and reset it as an org owner",
+  "license": "MIT OR Apache-2.0",
+  "author": "Cubist, Inc.",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "prebuild": "npm ci --ignore-scripts",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node --experimental-strip-types src/index.ts"
+  },
+  "dependencies": {
+    "@cubist-labs/cubesigner-sdk": "../../packages/sdk",
+    "@cubist-labs/cubesigner-sdk-fs-storage": "../../packages/fs-storage",
+    "otplib": "^13.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

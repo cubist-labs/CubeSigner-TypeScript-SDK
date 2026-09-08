@@ -1,0 +1,42 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.onErrorCodes = exports.retryOn5XX = exports.retry = void 0;
+// By default we will always retry
+const always = () => true;
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+/**
+ * Retry an async function
+ *
+ * @param {Function} f The function that may or namy not fail
+ * @param {RetryOptions<T>} opts specifying when, how long, and how many times to retry
+ */
+async function retry(f, { pred = always, delays = [100, 200, 400] }) {
+    let resp = await f();
+    let i = 0;
+    while (pred(resp) && i < delays.length) {
+        await delay(delays[i]);
+        resp = await f();
+        i++;
+    }
+    return resp;
+}
+exports.retry = retry;
+/**
+ * A specialization of retry that retries on 5XX errors
+ *
+ * @param {Function} f The function that may return a failing response
+ * @param {number[]} delays The sequence of delays (in milliseconds) between retries
+ * @return {T} The result of the function
+ */
+async function retryOn5XX(f, delays) {
+    return retry(f, { pred: (0, exports.onErrorCodes)(), delays });
+}
+exports.retryOn5XX = retryOn5XX;
+/**
+ * Generates a predicate that matches response status codes
+ * @param {number[]} codes The response codes on which we want to retry
+ * @return {Function} To be used as a predicate on retry
+ **/
+const onErrorCodes = (codes = [...Array(100).keys()].map((i) => 500 + i)) => (r) => codes.includes(r.response.status);
+exports.onErrorCodes = onErrorCodes;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmV0cnkuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvcmV0cnkudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBUUEsa0NBQWtDO0FBQ2xDLE1BQU0sTUFBTSxHQUFHLEdBQUcsRUFBRSxDQUFDLElBQUksQ0FBQztBQUUxQixNQUFNLEtBQUssR0FBRyxDQUFDLEVBQVUsRUFBRSxFQUFFLENBQUMsSUFBSSxPQUFPLENBQUMsQ0FBQyxPQUFPLEVBQUUsRUFBRSxDQUFDLFVBQVUsQ0FBQyxPQUFPLEVBQUUsRUFBRSxDQUFDLENBQUMsQ0FBQztBQUVoRjs7Ozs7R0FLRztBQUNJLEtBQUssVUFBVSxLQUFLLENBQ3pCLENBQW1CLEVBQ25CLEVBQUUsSUFBSSxHQUFHLE1BQU0sRUFBRSxNQUFNLEdBQUcsQ0FBQyxHQUFHLEVBQUUsR0FBRyxFQUFFLEdBQUcsQ0FBQyxFQUFtQjtJQUU1RCxJQUFJLElBQUksR0FBRyxNQUFNLENBQUMsRUFBRSxDQUFDO0lBQ3JCLElBQUksQ0FBQyxHQUFHLENBQUMsQ0FBQztJQUNWLE9BQU8sSUFBSSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsR0FBRyxNQUFNLENBQUMsTUFBTSxFQUFFLENBQUM7UUFDdkMsTUFBTSxLQUFLLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUM7UUFDdkIsSUFBSSxHQUFHLE1BQU0sQ0FBQyxFQUFFLENBQUM7UUFDakIsQ0FBQyxFQUFFLENBQUM7SUFDTixDQUFDO0lBRUQsT0FBTyxJQUFJLENBQUM7QUFDZCxDQUFDO0FBYkQsc0JBYUM7QUFFRDs7Ozs7O0dBTUc7QUFDSSxLQUFLLFVBQVUsVUFBVSxDQUM5QixDQUFtQixFQUNuQixNQUFpQjtJQUVqQixPQUFPLEtBQUssQ0FBQyxDQUFDLEVBQUUsRUFBRSxJQUFJLEVBQUUsSUFBQSxvQkFBWSxHQUFFLEVBQUUsTUFBTSxFQUFFLENBQUMsQ0FBQztBQUNwRCxDQUFDO0FBTEQsZ0NBS0M7QUFFRDs7OztJQUlJO0FBQ0csTUFBTSxZQUFZLEdBQ3ZCLENBQUMsUUFBa0IsQ0FBQyxHQUFHLEtBQUssQ0FBQyxHQUFHLENBQUMsQ0FBQyxJQUFJLEVBQUUsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsRUFBRSxFQUFFLENBQUMsR0FBRyxHQUFHLENBQUMsQ0FBQyxFQUFFLEVBQUUsQ0FDakUsQ0FBQyxDQUFtQyxFQUFFLEVBQUUsQ0FDdEMsS0FBSyxDQUFDLFFBQVEsQ0FBQyxDQUFDLENBQUMsUUFBUSxDQUFDLE1BQU0sQ0FBQyxDQUFDO0FBSHpCLFFBQUEsWUFBWSxnQkFHYSIsInNvdXJjZXNDb250ZW50IjpbIi8qKiBPcHRpb25zIHRvIGNvbmZpZ3VyZSB0aGUgYmVoYXZpb3Igb2YgdGhlIHJldHJ5IGZ1bmN0aW9uICovXG5leHBvcnQgdHlwZSBSZXRyeU9wdGlvbnM8VD4gPSB7XG4gIC8qKiBBY2NlcHRzIHRoZSByZXN1bHQgb2YgdGhlIGZhbGxpYmxlIG9wZXJhdGlvbiBhbmQgcmV0dXJucyB3aGV0aGVyIG9yIG5vdCB0byByZXRyeSAodHJ1ZSA9IHJldHJ5KSAqL1xuICBwcmVkPzogKHZhbDogVCkgPT4gYm9vbGVhbjtcbiAgLyoqIEEgc2VxdWVuY2Ugb2YgbWlsbGlzZWNvbmQgZGVsYXlzIHRvIHBlcmZvcm0gKi9cbiAgZGVsYXlzPzogbnVtYmVyW107XG59O1xuXG4vLyBCeSBkZWZhdWx0IHdlIHdpbGwgYWx3YXlzIHJldHJ5XG5jb25zdCBhbHdheXMgPSAoKSA9PiB0cnVlO1xuXG5jb25zdCBkZWxheSA9IChtczogbnVtYmVyKSA9PiBuZXcgUHJvbWlzZSgocmVzb2x2ZSkgPT4gc2V0VGltZW91dChyZXNvbHZlLCBtcykpO1xuXG4vKipcbiAqIFJldHJ5IGFuIGFzeW5jIGZ1bmN0aW9uXG4gKlxuICogQHBhcmFtIHtGdW5jdGlvbn0gZiBUaGUgZnVuY3Rpb24gdGhhdCBtYXkgb3IgbmFteSBub3QgZmFpbFxuICogQHBhcmFtIHtSZXRyeU9wdGlvbnM8VD59IG9wdHMgc3BlY2lmeWluZyB3aGVuLCBob3cgbG9uZywgYW5kIGhvdyBtYW55IHRpbWVzIHRvIHJldHJ5XG4gKi9cbmV4cG9ydCBhc3luYyBmdW5jdGlvbiByZXRyeTxUPihcbiAgZjogKCkgPT4gUHJvbWlzZTxUPixcbiAgeyBwcmVkID0gYWx3YXlzLCBkZWxheXMgPSBbMTAwLCAyMDAsIDQwMF0gfTogUmV0cnlPcHRpb25zPFQ+LFxuKTogUHJvbWlzZTxUPiB7XG4gIGxldCByZXNwID0gYXdhaXQgZigpO1xuICBsZXQgaSA9IDA7XG4gIHdoaWxlIChwcmVkKHJlc3ApICYmIGkgPCBkZWxheXMubGVuZ3RoKSB7XG4gICAgYXdhaXQgZGVsYXkoZGVsYXlzW2ldKTtcbiAgICByZXNwID0gYXdhaXQgZigpO1xuICAgIGkrKztcbiAgfVxuXG4gIHJldHVybiByZXNwO1xufVxuXG4vKipcbiAqIEEgc3BlY2lhbGl6YXRpb24gb2YgcmV0cnkgdGhhdCByZXRyaWVzIG9uIDVYWCBlcnJvcnNcbiAqXG4gKiBAcGFyYW0ge0Z1bmN0aW9ufSBmIFRoZSBmdW5jdGlvbiB0aGF0IG1heSByZXR1cm4gYSBmYWlsaW5nIHJlc3BvbnNlXG4gKiBAcGFyYW0ge251bWJlcltdfSBkZWxheXMgVGhlIHNlcXVlbmNlIG9mIGRlbGF5cyAoaW4gbWlsbGlzZWNvbmRzKSBiZXR3ZWVuIHJldHJpZXNcbiAqIEByZXR1cm4ge1R9IFRoZSByZXN1bHQgb2YgdGhlIGZ1bmN0aW9uXG4gKi9cbmV4cG9ydCBhc3luYyBmdW5jdGlvbiByZXRyeU9uNVhYPFQgZXh0ZW5kcyB7IHJlc3BvbnNlOiB7IHN0YXR1czogbnVtYmVyIH0gfT4oXG4gIGY6ICgpID0+IFByb21pc2U8VD4sXG4gIGRlbGF5cz86IG51bWJlcltdLFxuKTogUHJvbWlzZTxUPiB7XG4gIHJldHVybiByZXRyeShmLCB7IHByZWQ6IG9uRXJyb3JDb2RlcygpLCBkZWxheXMgfSk7XG59XG5cbi8qKlxuICogR2VuZXJhdGVzIGEgcHJlZGljYXRlIHRoYXQgbWF0Y2hlcyByZXNwb25zZSBzdGF0dXMgY29kZXNcbiAqIEBwYXJhbSB7bnVtYmVyW119IGNvZGVzIFRoZSByZXNwb25zZSBjb2RlcyBvbiB3aGljaCB3ZSB3YW50IHRvIHJldHJ5XG4gKiBAcmV0dXJuIHtGdW5jdGlvbn0gVG8gYmUgdXNlZCBhcyBhIHByZWRpY2F0ZSBvbiByZXRyeVxuICoqL1xuZXhwb3J0IGNvbnN0IG9uRXJyb3JDb2RlcyA9XG4gIChjb2RlczogbnVtYmVyW10gPSBbLi4uQXJyYXkoMTAwKS5rZXlzKCldLm1hcCgoaSkgPT4gNTAwICsgaSkpID0+XG4gIChyOiB7IHJlc3BvbnNlOiB7IHN0YXR1czogbnVtYmVyIH0gfSkgPT5cbiAgICBjb2Rlcy5pbmNsdWRlcyhyLnJlc3BvbnNlLnN0YXR1cyk7XG4iXX0=
